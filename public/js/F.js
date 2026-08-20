@@ -111,26 +111,34 @@ let F = {
     return parent.querySelector(selector);
   },
 
+  /** Prefijo de almacenamiento — no compartir claves con OnneB en el mismo origen. */
+  STORAGE_NS: 'fserp',
+
+  storageKey(key) {
+    return `${this.STORAGE_NS}:${key}`;
+  },
+
   /**
    * Guardar / leer JSON en localStorage (sesión de trabajo; se limpia al recargar la página).
-   * Migra datos previos de sessionStorage.
+   * Migra datos previos de sessionStorage (misma clave con namespace FS ERP).
    */
   session(key, value) {
+    const sk = this.storageKey(key);
     try {
       if (value === undefined) {
-        let raw = localStorage.getItem(key);
+        let raw = localStorage.getItem(sk);
         if (!raw) {
-          raw = sessionStorage.getItem(key);
+          raw = sessionStorage.getItem(sk);
           if (raw) {
-            localStorage.setItem(key, raw);
-            sessionStorage.removeItem(key);
+            localStorage.setItem(sk, raw);
+            sessionStorage.removeItem(sk);
           }
         }
         return raw ? JSON.parse(raw) : null;
       }
       const json = JSON.stringify(value);
-      localStorage.setItem(key, json);
-      sessionStorage.setItem(key, json);
+      localStorage.setItem(sk, json);
+      sessionStorage.setItem(sk, json);
       return value;
     } catch (err) {
       console.warn('[Session]', err);
@@ -139,9 +147,10 @@ let F = {
   },
 
   clearSession(key) {
+    const sk = this.storageKey(key);
     try {
-      localStorage.removeItem(key);
-      sessionStorage.removeItem(key);
+      localStorage.removeItem(sk);
+      sessionStorage.removeItem(sk);
     } catch (err) {
       console.warn('[Session] clear:', err);
     }

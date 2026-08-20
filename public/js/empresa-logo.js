@@ -6,7 +6,7 @@ const EmpresaLogo = {
   _empNit: null,
   _loadPromise: null,
   _pendingNit: null,
-  _STORAGE_PREFIX: 'onneb-emp-logo:',
+  _STORAGE_PREFIX: 'fserp-emp-logo:',
 
   hexToDataUrl(hex, mime = 'image/png') {
     const clean = String(hex || '')

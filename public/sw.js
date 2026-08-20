@@ -4,7 +4,7 @@
  */
 
 /*
-const CACHE_NAME = 'onneb-pos-v1';
+const CACHE_NAME = 'fserp-pos-v1';
 const ASSETS = [
   '/',
   '/index.html',

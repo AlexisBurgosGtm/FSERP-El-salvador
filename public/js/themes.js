@@ -2,8 +2,8 @@
  * FS ERP — selector de temas visuales
  */
 const OnnebThemes = {
-  STORAGE_KEY: 'onneb-theme',
-  DEFAULT: 'purple',
+  STORAGE_KEY: 'fserp-theme',
+  DEFAULT: 'fs',
 
   themes: [
     { id: 'purple', label: 'Estilo Onne B', swatchClass: 'theme-swatch-purple' },
@@ -118,7 +118,7 @@ const OnnebThemes = {
         nature: '#16a34a',
         fs: '#ea580c',
       };
-      meta.setAttribute('content', colors[id] || colors.purple);
+      meta.setAttribute('content', colors[id] || colors.fs);
     }
     requestAnimationFrame(() => this._updateContrastVars());
     this.syncPickerUI();

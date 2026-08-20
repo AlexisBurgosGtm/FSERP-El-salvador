@@ -4,7 +4,7 @@
  * Incluye FAB flotante arrastrable para abrir el menú de favoritos.
  */
 const MenuFavoritos = {
-  STORAGE_PREFIX: 'onneb-menu-favoritos',
+  STORAGE_PREFIX: 'fserp-menu-favoritos',
   EXCLUDE_KEYS: new Set(['inicio']),
 
   escapeHtml(value) {
@@ -624,7 +624,7 @@ const MenuFavoritos = {
  * Posición persistida en localStorage por dispositivo.
  */
 const FavoritosFab = {
-  POS_KEY: 'onneb-favoritos-fab-pos',
+  POS_KEY: 'fserp-favoritos-fab-pos',
   SIZE: 56,
   WIDTH_FALLBACK: 56,
   MARGIN: 8,

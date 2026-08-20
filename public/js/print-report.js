@@ -25,7 +25,7 @@ const PrintReport = {
       const nit = F.getEmpNit();
       if (nit) {
         try {
-          const stored = sessionStorage.getItem(`onneb-emp-logo:${nit}`);
+          const stored = sessionStorage.getItem(`fserp-emp-logo:${nit}`);
           if (stored) return stored;
         } catch {
           /* sessionStorage no disponible */

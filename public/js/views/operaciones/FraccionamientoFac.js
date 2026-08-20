@@ -20,8 +20,8 @@ const FraccionamientoFacView = {
 
   MINUTOS_OPTS: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 70, 80, 90],
 
-  LS_KEY: 'pos_onneb_ffac_params',
-  LS_PROCESS_KEY: 'pos_onneb_ffac_process',
+  LS_KEY: 'pos_fserp_ffac_params',
+  LS_PROCESS_KEY: 'pos_fserp_ffac_process',
 
   defaultParams() {
     return { minutos: 15, minimo: 100, maximo: Math.min(500, this._maximoLegal || 2500), coddoc: '' };
