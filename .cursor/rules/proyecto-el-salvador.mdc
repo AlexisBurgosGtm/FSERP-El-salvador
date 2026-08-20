@@ -1,0 +1,17 @@
+---
+description: Este repo es FS-SV; “Los ERP” = OnneB + FS-SV
+alwaysApply: true
+---
+
+# FS-SV
+
+En este workspace:
+
+- **FS-SV** = este proyecto (`FsERP-EL SALVADOR`, comercial **FS ERP**).
+- **Los ERP** = **OnneB + FS-SV**. Si el usuario dice “Los ERP”, el cambio aplica en ambos (salvo que diga solo uno).
+
+- Sin FEL Guatemala. DTE SV = fase posterior.
+- Licencias vía Mariandre → **Licencias FS ERP** únicamente (no generador local en este repo).
+- Puerto típico: **6501**
+
+Al pedir “ambos”, “Proyecto El Salvador” o “Los ERP”, integrar vistas también en OnneB GT y aquí.

@@ -1,0 +1,439 @@
+/* Header — barra metálica con degradado del tema */
+.main-header {
+  --header-fg: #ffffff;
+  position: relative;
+  z-index: 100;
+  isolation: isolate;
+  min-height: 3.25rem;
+  gap: 0.75rem;
+  color: var(--header-fg);
+  border-bottom: 1px solid color-mix(in srgb, var(--onneb-brand-dark) 65%, #000);
+  background:
+    linear-gradient(
+      118deg,
+      color-mix(in srgb, var(--onneb-brand-dark) 94%, #050505) 0%,
+      color-mix(in srgb, var(--onneb-brand) 82%, #3f3f46) 24%,
+      color-mix(in srgb, var(--onneb-brand-light) 72%, #f4f4f5) 48%,
+      color-mix(in srgb, var(--onneb-brand) 86%, #52525b) 72%,
+      color-mix(in srgb, var(--onneb-brand-dark) 96%, #0a0a0a) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 6px 18px color-mix(in srgb, var(--onneb-base-black) 22%, transparent);
+}
+
+.main-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.08) 36%,
+      rgba(0, 0, 0, 0.12) 68%,
+      rgba(0, 0, 0, 0.28) 100%
+    ),
+    repeating-linear-gradient(
+      92deg,
+      transparent 0,
+      transparent 3px,
+      rgba(255, 255, 255, 0.035) 3px,
+      rgba(255, 255, 255, 0.035) 4px
+    );
+}
+
+.main-header .main-title {
+  color: var(--header-fg);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+.main-header-start,
+.main-header-end {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.main-header-start {
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.main-header-end {
+  margin-left: auto;
+}
+
+.main-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.header-empresa-badge,
+.header-user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: min(220px, 32vw);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.1) 100%);
+  color: var(--header-fg, #fff);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.header-empresa-logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header-empresa-logo-img {
+  display: block;
+  max-height: 1.65rem;
+  max-width: 3.25rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.header-empresa-badge i,
+.header-user-badge i {
+  color: var(--header-fg, #fff);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+/* Aviso de vencimiento de licencia: rojo fijo, no depende del tema. */
+.header-license-expiry-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  max-width: min(11rem, 40vw);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #ffffff !important;
+  background: #dc2626 !important;
+  border: 1px solid #b91c1c !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  filter: none;
+}
+
+.header-license-expiry-badge[hidden] {
+  display: none !important;
+}
+
+.header-user-badge:has(.header-license-expiry-badge:not([hidden])) {
+  max-width: min(340px, 52vw);
+}
+
+#view-main .main-header .btn-icon {
+  border-color: rgba(255, 255, 255, 0.32);
+  color: var(--header-fg, #fff);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+#view-main .main-header .btn-icon:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.12));
+  color: var(--header-fg, #fff);
+  border-color: rgba(255, 255, 255, 0.48);
+}
+
+#view-main .main-header #btn-logout {
+  color: var(--header-fg, #fff) !important;
+  border-color: rgba(255, 255, 255, 0.34) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+#view-main .main-header #btn-logout:hover,
+#view-main .main-header #btn-logout:focus {
+  color: var(--header-fg, #fff) !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14)) !important;
+}
+
+.main-header .btn-theme-fab {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 4px 14px color-mix(in srgb, var(--onneb-brand-dark) 45%, transparent);
+}
+
+.header-empresa-icon-fallback[hidden],
+.header-app-icon-fallback[hidden] {
+  display: none !important;
+}
+
+.header-app-icon-fallback {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.header-empresa-badge span,
+.header-user-badge span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-user-badge {
+  max-width: min(160px, 24vw);
+}
+
+/* Botón flotante de temas */
+.theme-picker-wrap {
+  position: relative;
+}
+
+.btn-theme-fab {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--onneb-accent-on-brand, #fff);
+  background: linear-gradient(
+    145deg,
+    var(--onneb-brand-light, var(--onneb-brand)),
+    var(--onneb-brand-dark, var(--onneb-brand))
+  );
+  box-shadow:
+    0 4px 14px color-mix(in srgb, var(--onneb-brand) 38%, transparent),
+    0 2px 4px color-mix(in srgb, var(--onneb-base-black) 12%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-theme-fab:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--onneb-brand) 42%, transparent),
+    0 3px 8px color-mix(in srgb, var(--onneb-base-black) 14%, transparent);
+}
+
+.btn-theme-fab:active {
+  transform: scale(0.96);
+}
+
+.btn-theme-fab i {
+  font-size: 1rem;
+}
+
+.theme-picker-panel {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  right: 0;
+  min-width: 11.5rem;
+  max-height: min(70vh, 22rem);
+  overflow-y: auto;
+  padding: 0.55rem;
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--app-surface, #fff) 88%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--app-border);
+  box-shadow:
+    0 12px 32px color-mix(in srgb, var(--onneb-base-black) 16%, transparent),
+    0 2px 8px color-mix(in srgb, var(--onneb-base-black) 8%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 200;
+}
+
+.theme-picker-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.theme-picker-title {
+  padding: 0.25rem 0.5rem 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-text-muted);
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: none;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--app-text);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.theme-option:hover {
+  background: color-mix(in srgb, var(--onneb-brand) 10%, var(--app-surface));
+}
+
+.theme-option.is-active {
+  background: color-mix(in srgb, var(--onneb-brand) 14%, var(--app-surface));
+  font-weight: 600;
+}
+
+.theme-swatch {
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid color-mix(in srgb, var(--app-text) 12%, transparent);
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--onneb-base-black) 12%, transparent);
+}
+
+.theme-swatch-purple {
+  background: linear-gradient(135deg, #a78bfa, #6d28d9);
+}
+
+.theme-swatch-carbon {
+  background: linear-gradient(135deg, #52525b, #18181b);
+}
+
+.theme-swatch-blue {
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+}
+
+.theme-swatch-bw {
+  background: linear-gradient(135deg, #d4d4d4, #2a2a2a);
+}
+
+.theme-swatch-mustard {
+  background: linear-gradient(135deg, #fde047, #ca8a04);
+}
+
+.theme-swatch-fire {
+  background: linear-gradient(135deg, #fb923c, #dc2626);
+}
+
+.theme-swatch-winter {
+  background: linear-gradient(135deg, #bae6fd, #0284c7);
+}
+
+.theme-swatch-summer {
+  background: linear-gradient(135deg, #fcd34d, #38bdf8);
+}
+
+.theme-swatch-autumn {
+  background: linear-gradient(135deg, #fdba74, #9a3412);
+}
+
+.theme-swatch-valentine {
+  background: linear-gradient(135deg, #f9a8d4, #db2777);
+}
+
+.theme-swatch-nature {
+  background: linear-gradient(135deg, #4ade80, #15803d);
+}
+
+.theme-swatch-fs {
+  background: linear-gradient(135deg, #fb923c, #14532d);
+}
+
+#btn-logout {
+  border-color: var(--app-border);
+  color: var(--app-text);
+  background: var(--app-surface);
+  font-weight: 500;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+#btn-logout:hover {
+  background: color-mix(in srgb, var(--onneb-brand) 8%, var(--app-surface));
+  border-color: color-mix(in srgb, var(--onneb-brand) 28%, var(--app-border));
+  color: var(--app-text);
+}
+
+@media (max-width: 768px) {
+  .header-empresa-badge,
+  .header-user-badge {
+    max-width: min(120px, 22vw);
+    padding-inline: 0.55rem;
+    font-size: 0.72rem;
+  }
+
+  .header-empresa-badge span,
+  .header-user-badge span {
+    display: none;
+  }
+
+  .header-user-badge .header-license-expiry-badge:not([hidden]) {
+    display: inline-flex !important;
+    max-width: min(7.5rem, 28vw);
+    font-size: 0.62rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .header-user-badge:has(.header-license-expiry-badge:not([hidden])) {
+    max-width: min(160px, 42vw);
+  }
+
+  .header-empresa-badge i,
+  .header-user-badge i {
+    font-size: 1rem;
+  }
+
+  .main-title {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header-end {
+    gap: 0.4rem;
+  }
+
+  #btn-logout .me-1 {
+    display: none;
+  }
+
+  #btn-logout {
+    padding-inline: 0.55rem;
+    font-size: 0.78rem;
+  }
+}

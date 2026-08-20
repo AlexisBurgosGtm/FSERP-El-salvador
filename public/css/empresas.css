@@ -1,0 +1,111 @@
+.empresas-panel {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.5rem 0;
+  align-self: stretch;
+}
+
+.empresas-panel.catalogo-vista-wrap {
+  padding-bottom: 5rem;
+}
+
+.empresas-panel .table-responsive {
+  max-height: calc(100vh - 8rem);
+  overflow: auto;
+  border-radius: var(--app-radius-sm, 0.55rem);
+  border: 1px solid var(--app-border, #e0e0e0);
+  background: var(--app-surface, #ffffff);
+}
+
+.empresas-panel .table {
+  margin-bottom: 0;
+  font-size: 0.82rem;
+  color: var(--app-text, #1a1a1a);
+}
+
+.empresas-panel .table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--app-surface, #f5f5f5);
+  color: var(--app-text, #1a1a1a);
+  border-color: var(--app-border, #e0e0e0);
+  white-space: nowrap;
+}
+
+.empresas-panel .table td,
+.empresas-panel .table th {
+  border-color: var(--app-border, #e0e0e0);
+  vertical-align: middle;
+}
+
+.empresas-panel .table tbody tr:hover {
+  background: color-mix(in srgb, var(--onneb-base-black) 4%, #ffffff);
+}
+
+.empresas-badge {
+  font-size: 0.75rem;
+  color: var(--app-text-muted, #666);
+}
+
+.empresa-logo-field .empresa-logo-preview {
+  min-height: 2.5rem;
+}
+
+.empresa-logo-preview-img {
+  max-width: 120px;
+  max-height: 80px;
+  object-fit: contain;
+  border: 1px solid var(--app-border, #e0e0e0);
+  border-radius: var(--app-radius-sm, 0.55rem);
+  padding: 0.25rem;
+  background: var(--app-surface, #fff);
+}
+
+.empresa-logo-img {
+  max-height: 40px;
+  max-width: 120px;
+  object-fit: contain;
+}
+
+.empresas-acciones {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.empresas-cambiar-empnit-progress {
+  margin-top: 0.75rem;
+  border: 1px solid var(--app-border, #e0e0e0);
+  border-radius: var(--app-radius-sm, 0.55rem);
+  padding: 0.65rem 0.75rem;
+  background: color-mix(in srgb, var(--onneb-base-black) 2%, #ffffff);
+  text-align: left;
+}
+
+.empresas-cambiar-empnit-log {
+  max-height: 12rem;
+  overflow: auto;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.empresas-cambiar-empnit-log-ok {
+  color: #1b7a3d;
+}
+
+.empresas-cambiar-empnit-log-err {
+  color: #b42318;
+}
+
+.empresas-eliminar-tablas-wrap {
+  max-height: 14rem;
+  overflow: auto;
+}
+
+.empresas-eliminar-tablas th,
+.empresas-eliminar-tablas td {
+  vertical-align: middle;
+}

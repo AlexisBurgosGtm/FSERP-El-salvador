@@ -1,0 +1,10 @@
+---
+description: Alias Los ERP = OnneB + FS-SV
+alwaysApply: true
+---
+
+# Los ERP
+
+**Los ERP** = **OnneB** (`OnneB-ERP`) + **FS-SV** (este repo).
+
+Si el usuario pide algo para Los ERP, hacerlo en ambos productos (salvo que diga solo uno).

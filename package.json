@@ -1,0 +1,43 @@
+{
+  "name": "FS_ERP",
+  "version": "1.0.0",
+  "description": "SPA ERP FS ERP (El Salvador) - vanilla JS, Socket.IO, MSSQL",
+  "main": "server.js",
+  "scripts": {
+    "prestart": "node scripts/bump-build.js",
+    "start": "node server.js",
+    "predev": "node scripts/bump-build.js",
+    "dev": "node server.js",
+    "build": "node scripts/bump-build.js",
+    "icons": "node scripts/generate-icons.js",
+    "watch:build": "node scripts/watch-build.js",
+    "postinstall": "node scripts/generate-icons.js",
+    "stop": "node scripts/stop-server.js",
+    "license:check": "node scripts/check-license-catalog.js",
+    "seed:updater:nomina": "node scripts/seed-update-query-nomina-all.js",
+    "test": "nodemon server.js"
+  },
+  "keywords": [
+    "pos",
+    "spa",
+    "vanilla"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@simplewebauthn/server": "^11.0.0",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "mssql": "^11.0.1",
+    "multer": "^2.2.0",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.1",
+    "webdav": "^5.10.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "pace-js": "^1.2.4",
+    "sharp": "^0.35.1"
+  }
+}

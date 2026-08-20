@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="description" content="FS ERP">
+  <title>FS ERP</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/themes-ui.css">
+  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/pace.css">
+  <link rel="stylesheet" href="/css/empresas.css">
+  <link rel="stylesheet" href="/css/marcas.css">
+  <link rel="stylesheet" href="/css/catalogos.css">
+  <link rel="stylesheet" href="/css/inicio-empleado.css">
+  <link rel="stylesheet" href="/css/dashboard-admin.css">
+  <link rel="stylesheet" href="/css/tareas.css">
+  <link rel="stylesheet" href="/css/config-general.css">
+  <link rel="stylesheet" href="/css/roles-usuarios.css">
+  <link rel="stylesheet" href="/css/licencia.css">
+  <link rel="stylesheet" href="/css/formatos-impresion.css">
+  <link rel="stylesheet" href="/css/nomina.css">
+  <link rel="stylesheet" href="/css/updater.css">
+  <link rel="stylesheet" href="/css/pos.css">
+  <link rel="stylesheet" href="/css/corte-caja.css">
+  <link rel="stylesheet" href="/css/vales-caja.css">
+  <link rel="stylesheet" href="/css/lista-precios.css">
+  <link rel="stylesheet" href="/css/lista-facturas.css">
+  <link rel="stylesheet" href="/css/cuadre-caja.css">
+  <link rel="stylesheet" href="/css/documentos.css">
+  <link rel="stylesheet" href="/css/auditoria-cajas.css">
+  <link rel="stylesheet" href="/css/reportes-ventas.css">
+  <link rel="stylesheet" href="/css/libro-ventas.css">
+  <link rel="stylesheet" href="/css/libro-compras.css">
+  <link rel="stylesheet" href="/css/libro-diario.css">
+  <link rel="stylesheet" href="/css/libro-contable.css">
+  <link rel="stylesheet" href="/css/libro-mayor.css">
+  <link rel="stylesheet" href="/css/nomenclatura-contable.css">
+  <link rel="stylesheet" href="/css/formatos-contables.css">
+  <link rel="stylesheet" href="/css/config-contabilidad.css">
+  <link rel="stylesheet" href="/css/cuentas-cxp.css">
+  <link rel="stylesheet" href="/css/resumen-del-dia.css">
+  <link rel="stylesheet" href="/css/bancos.css">
+  <link rel="stylesheet" href="/css/inventario.css">
+  <link rel="stylesheet" href="/css/productos.css">
+  <link rel="stylesheet" href="/css/buttons-theme.css">
+</head>
+<body>
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('onneb-theme') || 'purple';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'purple');
+      }
+    })();
+  </script>
+  <!-- paceOptions debe ir ANTES de pace.min.js -->
+  <script>
+    window.paceOptions = {
+      ajax: {
+        trackMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+        trackWebSockets: false,
+        ignoreURLs: [/socket\.io/i, /\/socket\.io\//i],
+      },
+      document: true,
+      eventLag: false,
+      restartOnPushState: false,
+      restartOnRequestAfter: false,
+    };
+  </script>
+  <script src="/vendor/pace/pace.min.js"></script>
+  <script src="/js/pace-init.js"></script>
+  <div id="app" class="app-shell">
+    <section id="view-login" class="view view-active" data-view="login">
+      <div class="login-scene" aria-hidden="true">
+        <div class="login-orb login-orb-a"></div>
+        <div class="login-orb login-orb-b"></div>
+        <div class="login-orb login-orb-c"></div>
+        <div class="login-grid"></div>
+      </div>
+
+      <div class="login-theme-corner theme-picker-wrap">
+        <button type="button" id="btn-theme-toggle-login" class="btn-theme-fab"
+          aria-label="Cambiar tema visual" aria-expanded="false" aria-haspopup="true">
+          <i class="fa-solid fa-palette" aria-hidden="true"></i>
+        </button>
+        <div id="theme-picker-panel-login" class="theme-picker-panel" role="menu" aria-label="Temas visuales"></div>
+      </div>
+
+      <div class="login-glass login-glass-card">
+        <div class="login-logo-wrap">
+          <img src="/logo.png" alt="FS ERP" class="logo-app" width="120" height="120">
+        </div>
+        <form id="login-form" class="login-form" novalidate autocomplete="off" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
+          <div class="login-field-line">
+            <i class="fa-solid fa-building login-field-icon" aria-hidden="true"></i>
+            <select class="login-input login-input-line" id="login-empresa" name="onneb-empresa" required autocomplete="off">
+              <option value="">Empresa</option>
+            </select>
+          </div>
+          <div class="login-field-line">
+            <i class="fa-solid fa-user login-field-icon" aria-hidden="true"></i>
+            <input type="text" class="login-input login-input-line" id="username" name="onneb-user"
+              placeholder="Usuario" required autocomplete="off" autocapitalize="off" spellcheck="false"
+              data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
+          </div>
+          <div class="login-field-line">
+            <i class="fa-solid fa-lock login-field-icon" aria-hidden="true"></i>
+            <input type="text" class="login-input login-input-line config-pass-mask" id="password"
+              name="onneb-pass-x" placeholder="Contraseña" required
+              autocomplete="off" autocapitalize="off" autocorrect="off"
+              spellcheck="false" inputmode="text" readonly value=""
+              data-lpignore="true" data-1p-ignore="true" data-bwignore="true"
+              data-form-type="other" data-autocomplete="off" aria-autocomplete="none">
+          </div>
+          <br>
+          <button type="submit" class="btn btn-login w-100">
+            INICIAR SESIÓN
+          </button>
+          <button type="button" class="btn btn-outline-light w-100 mt-2" id="login-passkey-btn" style="display:none">
+            <i class="fa-solid fa-fingerprint me-1" aria-hidden="true"></i>
+            Usar huella / passkey
+          </button>
+        </form>
+      </div>
+      <div id="build-counter" class="build-counter" aria-live="polite">
+        <span class="build-count">Compilación #0</span>
+        <span class="build-date">—</span>
+      </div>
+    </section>
+
+    <section id="view-main" class="view view-next" data-view="main">
+      <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+      <aside id="sidebar" class="sidebar" aria-label="Menú principal">
+        <div class="sidebar-brand">
+          <img src="/icons/icon-72.png" width="32" height="32" alt="FS ERP" class="sidebar-favicon">
+          <span class="sidebar-brand-text">FS ERP</span>
+        </div>
+        <nav class="sidebar-nav">
+          <ul class="sidebar-top-menu list-unstyled mb-2">
+            <li>
+              <a href="#" class="sidebar-link" data-menu="inicio">
+                <i class="fa-solid fa-house" aria-hidden="true"></i> Inicio
+              </a>
+            </li>
+          </ul>
+          <div class="accordion sidebar-accordion" id="sidebarAccordion">
+            <div class="accordion-item sidebar-favoritos-item" id="sidebar-favoritos-accordion">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFavoritos" aria-expanded="false" aria-controls="collapseFavoritos">
+                  <i class="fa-solid fa-star sidebar-icon" aria-hidden="true"></i>
+                  <span>FAVORITOS</span>
+                </button>
+              </h2>
+              <div id="collapseFavoritos" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0" id="sidebar-favoritos-list">
+                  <li>
+                    <a href="#" class="sidebar-link sidebar-favoritos-config" id="btn-favoritos-config" data-favoritos-config="1">
+                      <i class="fa-solid fa-gear" aria-hidden="true"></i> Configurar
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOperaciones" aria-expanded="false" aria-controls="collapseOperaciones">
+                  <i class="fa-solid fa-cart-shopping sidebar-icon" aria-hidden="true"></i>
+                  <span>OPERACIONES</span>
+                </button>
+              </h2>
+              <div id="collapseOperaciones" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="pedidos-mostrador"><i class="fa-solid fa-store" aria-hidden="true"></i> Pedidos de Mostrador</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="comandas-restaurante"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Comandas Restaurante</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="cotizaciones"><i class="fa-solid fa-file-signature" aria-hidden="true"></i> Cotizaciones</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="fraccionamiento-fac"><i class="fa-solid fa-scissors" aria-hidden="true"></i> Fraccionamiento Facturas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="facturacion"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i> Facturas normales</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="facturacion-completa"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Facturación</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="notas-credito"><i class="fa-solid fa-file-circle-minus" aria-hidden="true"></i> Notas de Credito (clientes)</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="notas-abono"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Notas de Abono</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="compras"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Compras</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="notas-debito"><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Notas de credito (Proveedores)</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="gastos"><i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i> Gastos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="vales-caja"><i class="fa-solid fa-ticket" aria-hidden="true"></i> Vales de Caja</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="corte-caja"><i class="fa-solid fa-money-check" aria-hidden="true"></i> Corte de Caja</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="tareas"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Tareas</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDistribuidoras" aria-expanded="false" aria-controls="collapseDistribuidoras">
+                  <i class="fa-solid fa-truck-ramp-box sidebar-icon" aria-hidden="true"></i>
+                  <span>DISTRIBUIDORAS</span>
+                </button>
+              </h2>
+              <div id="collapseDistribuidoras" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="embarques"><i class="fa-solid fa-boxes-packing" aria-hidden="true"></i> Embarques (picking)</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="asignacion-pedidos"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i> Asignación de Facturas</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDespacho" aria-expanded="false" aria-controls="collapseDespacho">
+                  <i class="fa-solid fa-truck sidebar-icon" aria-hidden="true"></i>
+                  <span>DESPACHO</span>
+                </button>
+              </h2>
+              <div id="collapseDespacho" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="pendientes-entrega"><i class="fa-solid fa-box" aria-hidden="true"></i> Pendientes Entrega</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="despachos-en-cocina"><i class="fa-solid fa-kitchen-set" aria-hidden="true"></i> Despachos en Cocina</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCuentasCxp" aria-expanded="false" aria-controls="collapseCuentasCxp">
+                  <i class="fa-solid fa-hand-holding-dollar sidebar-icon" aria-hidden="true"></i>
+                  <span>CUENTAS POR COBRAR / PAGAR</span>
+                </button>
+              </h2>
+              <div id="collapseCuentasCxp" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="cuentas-cobrar"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Cuentas por Cobrar</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="recibos-caja-cxc"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Recibos de Caja CXC</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="cuentas-pagar"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i> Cuentas por Pagar</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventarios" aria-expanded="false" aria-controls="collapseInventarios">
+                  <i class="fa-solid fa-boxes-stacked sidebar-icon" aria-hidden="true"></i>
+                  <span>INVENTARIOS</span>
+                </button>
+              </h2>
+              <div id="collapseInventarios" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="productos-precios"><i class="fa-solid fa-tags" aria-hidden="true"></i> Productos y precios</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="lista-precios"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> Lista Precios</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="inventario"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i> Inventario</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="entradas-inventario"><i class="fa-solid fa-arrow-down-wide-short" aria-hidden="true"></i> Entradas de inventario</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="salidas-inventario"><i class="fa-solid fa-arrow-up-wide-short" aria-hidden="true"></i> Salidas de inventario</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="inventario-retroactivo"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Inventario Retroactivo</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="actualizacion-inventario"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Actualización de inventario</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="actualizacion-costos"><i class="fa-solid fa-dollar-sign" aria-hidden="true"></i> Actualización de costos</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTraslados" aria-expanded="false" aria-controls="collapseTraslados">
+                  <i class="fa-solid fa-truck-ramp-box sidebar-icon" aria-hidden="true"></i>
+                  <span>TRASLADOS DE MERCADERÍA</span>
+                </button>
+              </h2>
+              <div id="collapseTraslados" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="crear-traslado"><i class="fa-solid fa-plus" aria-hidden="true"></i> Crear Traslado</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="recibir-traslado"><i class="fa-solid fa-box-open" aria-hidden="true"></i> Recibir Traslado</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseArchivo" aria-expanded="false" aria-controls="collapseArchivo">
+                  <i class="fa-solid fa-folder-tree sidebar-icon" aria-hidden="true"></i>
+                  <span>ARCHIVO</span>
+                </button>
+              </h2>
+              <div id="collapseArchivo" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="documentos"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Documentos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="lista-facturas"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Lista Facturas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="cuadre-caja"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> Cuadre de Caja</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="resumen-del-dia"><i class="fa-solid fa-calendar-day" aria-hidden="true"></i> Resumen del día</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="autorizaciones"><i class="fa-solid fa-lock" aria-hidden="true"></i> Autorizaciones</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="documentos-eliminados"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> Documentos eliminados</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="promociones"><i class="fa-solid fa-tags" aria-hidden="true"></i> Promociones</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReportes" aria-expanded="false" aria-controls="collapseReportes">
+                  <i class="fa-solid fa-chart-column sidebar-icon" aria-hidden="true"></i>
+                  <span>REPORTES</span>
+                </button>
+              </h2>
+              <div id="collapseReportes" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="auditoria-cajas"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Auditoría Cajas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="reportes-ventas"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Reportes de Ventas</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOnlineServices" aria-expanded="false" aria-controls="collapseOnlineServices">
+                  <i class="fa-solid fa-cloud sidebar-icon" aria-hidden="true"></i>
+                  <span>ONLINE SERVICES</span>
+                </button>
+              </h2>
+              <div id="collapseOnlineServices" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="subir-catalogo"><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Subir catálogo</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="descargar-catalogo"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> Descargar Catálogo</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="traslados-en-transito"><i class="fa-solid fa-truck-ramp-box" aria-hidden="true"></i> Traslados en tránsito</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContabilidad" aria-expanded="false" aria-controls="collapseContabilidad">
+                  <i class="fa-solid fa-calculator sidebar-icon" aria-hidden="true"></i>
+                  <span>CONTABILIDAD</span>
+                </button>
+              </h2>
+              <div id="collapseContabilidad" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="libro-compras"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Libro Compras</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="libro-ventas"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Libro Ventas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="libro-diario"><i class="fa-solid fa-book" aria-hidden="true"></i> Libro Diario</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="libro-mayor"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Libro Mayor</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="libro-balance"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> Libro Balance</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomenclatura-contable"><i class="fa-solid fa-sitemap" aria-hidden="true"></i> Nomenclatura Contable</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="formatos-contables"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Formatos Contables</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="configuraciones-contabilidad"><i class="fa-solid fa-gear" aria-hidden="true"></i> Configuraciones Contabilidad</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBancos" aria-expanded="false" aria-controls="collapseBancos">
+                  <i class="fa-solid fa-building-columns sidebar-icon" aria-hidden="true"></i>
+                  <span>BANCOS</span>
+                </button>
+              </h2>
+              <div id="collapseBancos" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="movimientos-banco"><i class="fa-solid fa-money-bill-transfer" aria-hidden="true"></i> Movimientos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="bancos"><i class="fa-solid fa-building-columns" aria-hidden="true"></i> Bancos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="cuentas-bancarias"><i class="fa-solid fa-wallet" aria-hidden="true"></i> Cuentas Bancarias</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRh" aria-expanded="false" aria-controls="collapseRh">
+                  <i class="fa-solid fa-people-group sidebar-icon" aria-hidden="true"></i>
+                  <span>RECURSOS HUMANOS</span>
+                </button>
+              </h2>
+              <div id="collapseRh" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="empleados"><i class="fa-solid fa-user-tie" aria-hidden="true"></i> Empleados</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="control-asistencia"><i class="fa-solid fa-clipboard-user" aria-hidden="true"></i> Control de Asistencia</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-config"><i class="fa-solid fa-gear" aria-hidden="true"></i> Configuración nómina</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-conceptos"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Conceptos nómina</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-empleados"><i class="fa-solid fa-id-card" aria-hidden="true"></i> Datos nómina empleados</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-vales"><i class="fa-solid fa-ticket" aria-hidden="true"></i> Vales a Empleados</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-interna"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Nómina interna</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="nomina-igss"><i class="fa-solid fa-building-shield" aria-hidden="true"></i> Planilla IGSS</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCatalogos" aria-expanded="false" aria-controls="collapseCatalogos">
+                  <i class="fa-solid fa-folder-open sidebar-icon" aria-hidden="true"></i>
+                  <span>CATALOGOS</span>
+                </button>
+              </h2>
+              <div id="collapseCatalogos" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="marcas"><i class="fa-solid fa-bookmark" aria-hidden="true"></i> Marcas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="medidas"><i class="fa-solid fa-ruler-combined" aria-hidden="true"></i> Medidas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="proveedores"><i class="fa-solid fa-truck" aria-hidden="true"></i> Proveedores</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="clientes"><i class="fa-solid fa-users" aria-hidden="true"></i> Clientes</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="empleados"><i class="fa-solid fa-user-tie" aria-hidden="true"></i> Empleados</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="tipo-negocios"><i class="fa-solid fa-store" aria-hidden="true"></i> Tipo de Negocios</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="municipios"><i class="fa-solid fa-city" aria-hidden="true"></i> Municipios</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="departamentos"><i class="fa-solid fa-map" aria-hidden="true"></i> Departamentos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="rutas"><i class="fa-solid fa-route" aria-hidden="true"></i> Rutas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="fabricantes"><i class="fa-solid fa-industry" aria-hidden="true"></i> Fabricantes</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="ubicaciones"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Ubicaciones</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="mesas-restaurante"><i class="fa-solid fa-chair" aria-hidden="true"></i> Mesas Restaurante</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="cajas"><i class="fa-solid fa-cash-register" aria-hidden="true"></i> Cajas</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransportes" aria-expanded="false" aria-controls="collapseTransportes">
+                  <i class="fa-solid fa-truck-fast sidebar-icon" aria-hidden="true"></i>
+                  <span>TRANSPORTES</span>
+                </button>
+              </h2>
+              <div id="collapseTransportes" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="servicio-mecanica"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> Servicio Mecánica</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="mantenimiento-llantas"><i class="fa-solid fa-compact-disc" aria-hidden="true"></i> Mantenimiento de llantas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="registro-kilometrajes"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Registro de Kilometrajes</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="vehiculos"><i class="fa-solid fa-car" aria-hidden="true"></i> Vehículos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="plataformas"><i class="fa-solid fa-truck-ramp-box" aria-hidden="true"></i> Plataformas</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConfig" aria-expanded="false" aria-controls="collapseConfig">
+                  <i class="fa-solid fa-sliders sidebar-icon" aria-hidden="true"></i>
+                  <span>CONFIGURACIONES</span>
+                </button>
+              </h2>
+              <div id="collapseConfig" class="accordion-collapse collapse" data-bs-parent="#sidebarAccordion">
+                <ul class="sidebar-submenu list-unstyled mb-0">
+                  <li><a href="#" class="sidebar-link" data-menu="empresas"><i class="fa-solid fa-building" aria-hidden="true"></i> Empresas</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="config-general"><i class="fa-solid fa-gear" aria-hidden="true"></i> Config general</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="roles-usuarios"><i class="fa-solid fa-user-shield" aria-hidden="true"></i> Roles de usuarios</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="tipo-documentos"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Tipo documentos</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="formatos-impresion"><i class="fa-solid fa-print" aria-hidden="true"></i> Formatos de impresión</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="updater"><i class="fa-solid fa-database" aria-hidden="true"></i> Actualizador BD</a></li>
+                  <li><a href="#" class="sidebar-link" data-menu="licencia"><i class="fa-solid fa-certificate" aria-hidden="true"></i> Licencia</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- Espacio final: el último ítem real queda por encima del FAB Menu -->
+            <div class="accordion-item sidebar-spacer-item" aria-hidden="true">
+              <div class="sidebar-end-spacer"></div>
+            </div>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="main-layout">
+        <header class="main-header d-flex align-items-center px-3 py-2">
+          <div class="main-header-start">
+            <button type="button" id="btn-menu-toggle" class="btn btn-icon" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+              <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="header-empresa-badge" id="header-empresa" title="Empresa activa">
+              <span class="header-empresa-logo" id="header-empresa-logo" hidden aria-hidden="true"></span>
+              <img src="/icons/icon-72.png" width="24" height="24" alt="" class="header-app-icon-fallback" id="header-empresa-icon-fallback">
+              <span id="header-empresa-name">—</span>
+            </div>
+          </div>
+          <span class="main-title fw-semibold flex-grow-1 text-center text-md-start" id="main-title">FS ERP</span>
+          <div class="main-header-end">
+            <div class="header-user-badge" id="header-user" title="Usuario activo">
+              <span id="header-license-expiry-badge" class="header-license-expiry-badge" hidden></span>
+              <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+              <span id="header-user-name">—</span>
+            </div>
+            <div class="theme-picker-wrap">
+              <button type="button" id="btn-theme-toggle" class="btn-theme-fab"
+                aria-label="Cambiar tema visual" aria-expanded="false" aria-haspopup="true">
+                <i class="fa-solid fa-palette" aria-hidden="true"></i>
+              </button>
+              <div id="theme-picker-panel" class="theme-picker-panel" role="menu" aria-label="Temas visuales"></div>
+            </div>
+            <button type="button" id="btn-logout" class="btn btn-sm btn-outline-secondary">
+              <i class="fa-solid fa-right-from-bracket me-1" aria-hidden="true"></i>Salir
+            </button>
+          </div>
+        </header>
+        <main id="main-content" class="main-content flex-grow-1 d-flex align-items-center justify-content-center">
+          <p class="text-muted mb-0">Seleccione una opción del menú</p>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  <button type="button" id="btn-menu-fab" class="btn-menu-fab" aria-label="Abrir menú" aria-expanded="false" aria-controls="sidebar">
+    <i class="fa-solid fa-bars btn-menu-fab-icon" aria-hidden="true"></i>
+    <span class="btn-menu-fab-label">Menu</span>
+  </button>
+
+  <button type="button" id="btn-favoritos-fab" class="btn-favoritos-fab" aria-label="Asistente" aria-hidden="true" title="Asistente (arrastre para mover)">
+    <i class="fa-solid fa-star btn-favoritos-fab-icon" aria-hidden="true"></i>
+  </button>
+
+  <script src="/vendor/chart.js/chart.umd.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+  <script src="/vendor/jsstore/jsstore.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/F.js"></script>
+  <script src="/js/themes.js"></script>
+  <script src="/js/catalogos.js"></script>
+  <script src="/js/doc-nit-sat-lookup.js"></script>
+  <script src="/js/catalogo-empresa-view.js"></script>
+  <script src="/js/views/configuraciones/empresas.js"></script>
+  <script src="/js/views/catalogos/marcas.js"></script>
+  <script src="/js/views/catalogos/medidas.js"></script>
+  <script src="/js/views/catalogos/rutas.js"></script>
+  <script src="/js/views/catalogos/fabricantes.js"></script>
+  <script src="/js/views/catalogos/ubicaciones.js"></script>
+  <script src="/js/views/catalogos/mesas-restaurante.js"></script>
+  <script src="/js/views/catalogos/clientes.js"></script>
+  <script src="/js/views/catalogos/tipo-negocios.js"></script>
+  <script src="/js/views/catalogos/proveedores.js"></script>
+  <script src="/js/views/catalogos/municipios.js"></script>
+  <script src="/js/views/catalogos/departamentos.js"></script>
+  <script src="/js/views/rh/empleados.js"></script>
+  <script src="/js/views/rh/control-asistencia.js"></script>
+  <script src="/js/views/rh/nomina-print.js"></script>
+  <script src="/js/views/rh/nomina-config.js"></script>
+  <script src="/js/views/rh/nomina-conceptos.js"></script>
+  <script src="/js/views/rh/nomina-empleados.js"></script>
+  <script src="/js/views/rh/nomina-vales.js"></script>
+  <script src="/js/views/rh/nomina-doc-view.js"></script>
+  <script src="/js/views/rh/nomina-interna.js"></script>
+  <script src="/js/views/configuraciones/tipo-documentos.js"></script>
+  <script src="/js/views/catalogos/cajas.js"></script>
+  <script src="/js/views/transportes/vehiculos.js"></script>
+  <script src="/js/views/transportes/plataformas.js"></script>
+  <script src="/js/views/transportes/mantenimiento-llantas.js"></script>
+  <script src="/js/views/transportes/kilometrajes.js"></script>
+  <script src="/js/views/transportes/servicio-mecanica.js"></script>
+  <script src="/js/formato-impresion-designer.js"></script>
+  <script src="/js/views/configuraciones/formatos-impresion.js"></script>
+  <script src="/js/views/configuraciones/config-general.js"></script>
+  <script src="/js/views/configuraciones/roles-usuarios.js"></script>
+  <script src="/js/views/configuraciones/licencia.js"></script>
+  <script src="/js/views/configuraciones/updater.js"></script>
+  <script src="/js/doc-fecha.js"></script>
+  <script src="/js/doc-entrega.js"></script>
+  <script src="/js/doc-tipofac-prioridad.js"></script>
+  <script src="/js/doc-vendedor-clave.js"></script>
+  <script src="/js/empresa-logo.js"></script>
+  <script src="/js/print-report.js"></script>
+  <script src="/js/empleado-carne.js"></script>
+  <script src="/js/doc-print.js"></script>
+  <script src="/js/barcode-scanner-ui.js"></script>
+  <script src="/js/pos-product-keyboard-ui.js"></script>
+  <script src="/js/pos-doc-search-ui.js"></script>
+  <script src="/js/cliente-historial-precios-ui.js"></script>
+  <script src="/js/doc-tipo-select.js"></script>
+  <script src="/js/views/operaciones/pos.js"></script>
+  <script src="/js/views/operaciones/comandas-restaurante.js"></script>
+  <script src="/js/views/operaciones/cotizaciones.js"></script>
+  <script src="/js/views/operaciones/FraccionamientoFac.js"></script>
+  <script src="/js/views/operaciones/facturacion.js"></script>
+  <script src="/js/doc-linea-descuento-ui.js"></script>
+  <script src="/js/views/operaciones/notas-credito.js"></script>
+  <script src="/js/views/operaciones/notas-abono.js"></script>
+  <script src="/js/views/operaciones/notas-debito.js"></script>
+  <script src="/js/views/operaciones/vales-caja.js"></script>
+  <script src="/js/views/operaciones/corte-caja.js"></script>
+  <script src="/js/views/operaciones/compras.js"></script>
+  <script src="/js/views/inventarios/inventario-mov-view.js"></script>
+  <script src="/js/views/inventarios/inventario.js"></script>
+  <script src="/js/views/inventarios/inventario-retroactivo.js"></script>
+  <script src="/js/views/inventarios/inventario-actualizacion.js"></script>
+  <script src="/js/views/inventarios/actualizacion-costos.js"></script>
+  <script src="/js/views/inventarios/lista-precios.js"></script>
+  <script src="/js/views/cuentas/cuentas-por-cobrar.js"></script>
+  <script src="/js/views/cuentas/recibos-caja-cxc.js"></script>
+  <script src="/js/views/cuentas/cuentas-por-pagar.js"></script>
+  <script src="/js/doc-opciones.js"></script>
+  <script src="/js/autorizaciones-ui.js"></script>
+  <script src="/js/views/archivo/documentos.js"></script>
+  <script src="/js/views/archivo/lista-facturas.js"></script>
+  <script src="/js/views/archivo/cuadre-caja.js"></script>
+  <script src="/js/views/archivo/resumen-del-dia.js"></script>
+  <script src="/js/views/archivo/autorizaciones.js"></script>
+  <script src="/js/views/archivo/documentos-eliminados.js"></script>
+  <script src="/js/views/archivo/promociones.js"></script>
+  <script src="/js/views/reportes/auditoria-cajas.js"></script>
+  <script src="/js/views/reportes/reportes-ventas.js"></script>
+  <script src="/js/views/online-services/subir-catalogo.js"></script>
+  <script src="/js/views/online-services/descargar-catalogo.js"></script>
+  <script src="/js/views/online-services/traslados-en-transito.js"></script>
+  <script src="/js/libro-contable-common.js"></script>
+  <script src="/js/views/contabilidad/libro-ventas.js"></script>
+  <script src="/js/views/contabilidad/libro-compras.js"></script>
+  <script src="/js/views/contabilidad/libro-diario.js"></script>
+  <script src="/js/views/contabilidad/libro-mayor.js"></script>
+  <script src="/js/views/contabilidad/libro-balance.js"></script>
+  <script src="/js/views/contabilidad/nomenclatura-contable.js"></script>
+  <script src="/js/views/contabilidad/formatos-contables.js"></script>
+  <script src="/js/views/contabilidad/configuraciones-contabilidad.js"></script>
+  <script src="/js/views/bancos/movimientos-banco.js"></script>
+  <script src="/js/views/bancos/bancos.js"></script>
+  <script src="/js/views/bancos/cuentas-bancarias.js"></script>
+  <script src="/js/views/inventarios/productos.js"></script>
+  <script src="/js/tipo-empleado-access.js"></script>
+  <script src="/js/license-access.js"></script>
+  <script src="/js/menu-favoritos.js"></script>
+  <script src="/js/views/inicio/dashboard-admin.js"></script>
+  <script src="/js/views/inicio/vendedor-inicio.js"></script>
+  <script src="/js/views/inicio/cajero-inicio.js"></script>
+  <script src="/js/views/inicio/transporte-inicio.js"></script>
+  <script src="/js/views/inicio/inicio-empleado.js"></script>
+  <script src="/js/views/operaciones/tareas.js"></script>
+  <script src="/js/views/distribuidoras/embarques.js"></script>
+  <script src="/js/views/distribuidoras/asignacion-pedidos.js"></script>
+  <script src="/js/views/despacho/despachos-en-cocina.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/manifest.js"></script>
+  <script src="/js/webauthn-client.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

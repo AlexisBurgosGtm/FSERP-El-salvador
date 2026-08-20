@@ -1,0 +1,54 @@
+.nomenclatura-contable-wrap .nc-filter-tipoef {
+  min-width: 11rem;
+}
+
+.nomenclatura-contable-wrap .nc-table-wrap {
+  max-height: calc(100vh - 280px);
+}
+
+.nomenclatura-contable-wrap .nc-codcuenta {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.nomenclatura-contable-wrap tr.nc-row-inactiva td {
+  opacity: 0.55;
+}
+
+.nomenclatura-contable-wrap .table thead th {
+  white-space: nowrap;
+}
+
+.nc-form-grid .nc-form-field .form-label {
+  margin-bottom: 0.2rem;
+}
+
+.nc-form-grid .nc-form-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+.nc-parent-hint {
+  padding: 0.45rem 0.6rem;
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--onneb-primary, #0d6efd) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--onneb-primary, #0d6efd) 18%, transparent);
+  line-height: 1.45;
+}
+
+.nc-parent-label {
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.nc-parent-chip {
+  display: inline;
+}
+
+.nc-parent-chip-exact {
+  text-decoration: underline;
+}
+
+.nc-parent-sep {
+  margin: 0 0.35rem;
+  color: var(--onneb-text-muted, #6c757d);
+}

@@ -1,0 +1,14 @@
+---
+description: Al crear vistas/submenús en FS-SV, cubrir MENU_GROUPS — emisión solo en Mariandre
+alwaysApply: true
+---
+
+# Licencias FS-SV — nuevas vistas y submenús
+
+Misma disciplina que OnneB: toda vista nueva debe estar en `MENU_GROUPS`.
+
+**Única UI de emisión:** Mariandre → **Licencias FS ERP** (no el generador OnneB, no carpeta local).
+
+Checklist: `index.html` → `roles-usuarios.js` (`ALL_MENUS`, `MENU_LABELS`, `MENU_GROUPS`) → `tipo-empleado-access.js` → `app.js` → `license-modules.js` (API) → verificar en Mariandre.
+
+No recrear `GENERADOR LICENCIAS` en este repo.

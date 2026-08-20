@@ -1,0 +1,20 @@
+-- Vista app.Empresas (opcional) — login y consultas sin EMPLOGO
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'app')
+  EXEC(N'CREATE SCHEMA app');
+GO
+
+CREATE OR ALTER VIEW app.Empresas AS
+SELECT
+  EMPNIT,
+  EMPNOMBRE,
+  EMPRAZONSOCIAL,
+  EMPDIRECCION,
+  EMPTELEFONO,
+  EMPEMAIL,
+  EMPCONTACTO,
+  EMPTELCONTACTO,
+  CODTIPOEMPRESA,
+  OBJETIVO,
+  PRESUPUESTO
+FROM dbo.Empresas;
+GO

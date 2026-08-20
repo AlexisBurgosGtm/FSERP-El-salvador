@@ -1,0 +1,349 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--login-bg, #ffffff);
+  color: var(--login-text, #1a1a1a);
+  overflow: hidden;
+}
+
+.app-shell {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.view-active {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.view-next {
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+.view-exit-left {
+  transform: translateX(-100%);
+  z-index: 1;
+}
+
+.view-enter-from-right {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.view-exit-right {
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+.view-enter-from-left {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.view-start-left {
+  transform: translateX(-100%);
+  z-index: 2;
+}
+
+/* Cambio de vista sin animación (logout / login) */
+.view-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+#view-login.view-active {
+  z-index: 10;
+}
+
+#view-main.view-active {
+  z-index: 5;
+}
+
+/* Main — fondo blanco como login */
+#view-main {
+  background: var(--app-bg, #ffffff);
+  color: var(--app-text);
+  --bs-border-radius: var(--app-radius);
+  --bs-border-radius-sm: var(--app-radius-sm);
+  --bs-border-radius-lg: var(--app-radius);
+  --bs-border-radius-xl: var(--app-radius-modal);
+  --bs-border-radius-xxl: calc(var(--app-radius-modal) + 0.15rem);
+  --bs-card-border-radius: var(--app-radius);
+  --bs-card-border-color: var(--app-border);
+  --bs-card-bg: var(--app-surface, #fff);
+  --bs-box-shadow-sm: var(--app-shadow);
+}
+
+#view-main .text-muted {
+  color: var(--app-text-muted) !important;
+}
+
+.main-layout {
+  background: var(--app-bg, #ffffff);
+}
+
+.main-header {
+  /* Fondo metálico definido en themes-ui.css (degradado por tema) */
+  color: var(--header-fg, #ffffff);
+}
+
+.main-header .fw-semibold,
+.main-header .main-title {
+  color: var(--header-fg, #ffffff);
+}
+
+.main-content {
+  min-height: 0;
+  background: var(--app-bg, #ffffff);
+  color: var(--app-text);
+}
+
+.main-content.align-items-stretch {
+  overflow: hidden;
+}
+
+.main-content > .pos-vista-wrap,
+.main-content > .pos-list-wrap,
+.main-content > .corte-caja-wrap,
+.main-content > .lista-precios-wrap,
+.main-content > .lista-facturas-wrap,
+.main-content > .cuadre-caja-wrap,
+.main-content > .config-general-wrap,
+.main-content > .config-contab-wrap,
+.main-content > .dashboard-admin-wrap,
+.main-content > .inicio-empleado-wrap,
+.main-content > .mb-wrap,
+.main-content > .cxp-wrap,
+.main-content > .formatos-impresion-wrap,
+.main-content > .actualizacion-costos-wrap,
+.main-content > .nomina-empleados-view,
+.main-content > .vales-caja-view,
+.main-content.productos-view-root {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-self: stretch;
+}
+
+.os-tt-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.os-tt-toolbar {
+  flex-shrink: 0;
+}
+
+.os-tt-filter-origen {
+  min-width: 14rem;
+  max-width: 22rem;
+}
+
+.os-tt-filter-search {
+  min-width: 12rem;
+}
+
+.os-tt-table-host {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.os-tt-table-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: calc(100vh - 260px);
+  overflow: auto;
+}
+
+.authz-toolbar {
+  flex-shrink: 0;
+}
+
+.authz-filter-mes {
+  min-width: 8.5rem;
+}
+
+.authz-filter-anio {
+  min-width: 5.5rem;
+}
+
+.authz-filter-autorizado {
+  min-width: 7rem;
+}
+
+.authz-filter-search {
+  min-width: 12rem;
+}
+
+.main-content.flex-column {
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.main-content.flex-column > .formatos-impresion-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.inicio-blank {
+  min-height: 100%;
+  background: var(--app-bg, #ffffff);
+}
+
+/* Bloqueo global durante guardado / actualización (POST, PUT, PATCH, DELETE) */
+body.onneb-mutation-busy {
+  cursor: wait;
+}
+
+body.onneb-mutation-busy .main-content button,
+body.onneb-mutation-busy .main-content .btn,
+body.onneb-mutation-busy .main-content [role='button'].pos-product-item,
+body.onneb-mutation-busy .sidebar-link,
+body.onneb-mutation-busy #btn-logout,
+body.onneb-mutation-busy #btn-theme-toggle,
+body.onneb-mutation-busy #btn-theme-toggle-login,
+body.onneb-mutation-busy #btn-menu-toggle,
+body.onneb-mutation-busy #btn-menu-fab,
+body.onneb-mutation-busy .btn-catalogo-nuevo,
+body.onneb-mutation-busy .btn-onneb-nuevo-fab,
+body.onneb-mutation-busy .btn-roles-guardar-fab,
+body.onneb-mutation-busy .pos-fab-finalizar,
+body.onneb-mutation-busy .pos-fab-barcode,
+body.onneb-mutation-busy .pos-list-fab-nuevo {
+  pointer-events: none !important;
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+}
+
+body.onneb-mutation-busy .swal2-container button {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* —— UI global: cards, tablas, forms (misma línea visual del piloto) —— */
+#view-main .card {
+  border: 1px solid var(--app-border, #e5e7eb);
+  border-radius: var(--app-radius) !important;
+  box-shadow: var(--app-shadow);
+  background: var(--app-surface, #fff);
+}
+
+#view-main .card > .card-header {
+  border-bottom: 1px solid var(--app-border, #e5e7eb);
+  background: color-mix(in srgb, var(--app-surface, #fff) 92%, var(--app-bg, #f5f5f5));
+}
+
+#view-main .card.shadow-sm,
+#view-main .card.shadow,
+#view-main .card.shadow-lg {
+  box-shadow: var(--app-shadow) !important;
+}
+
+#view-main .form-control,
+#view-main .form-select,
+#view-main .input-group-text {
+  border-radius: var(--app-radius-input);
+  border-color: color-mix(in srgb, var(--app-border, #dde1e6) 92%, transparent);
+}
+
+#view-main .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#view-main .input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#view-main .btn:not(.rounded-pill):not(.btn-menu-fab):not(.btn-onneb-nuevo-fab):not(.btn-roles-guardar-fab):not(.pos-list-fab-nuevo):not(.pos-fab-finalizar):not(.pos-fab-agregar):not(.pos-fab-barcode):not(.btn-theme-fab) {
+  border-radius: var(--app-radius-sm);
+}
+
+#view-main .btn-sm:not(.rounded-pill) {
+  border-radius: var(--app-radius-sm);
+}
+
+#view-main .table-responsive {
+  border: 1px solid color-mix(in srgb, var(--app-border, #e0e0e0) 90%, transparent);
+  border-radius: var(--app-radius-sm);
+  background: var(--app-surface, #fff);
+}
+
+#view-main .card > .table-responsive,
+#view-main .card-body > .table-responsive {
+  /* evita doble borde cuando la card ya enmarca la tabla */
+  border-color: color-mix(in srgb, var(--app-border, #e0e0e0) 75%, transparent);
+}
+
+#view-main .table {
+  --bs-table-striped-bg: transparent;
+  border-color: transparent;
+}
+
+#view-main .table > :not(caption) > * > * {
+  border-bottom-color: color-mix(in srgb, var(--app-border, #e8e8e8) 85%, transparent);
+}
+
+#view-main .table thead th,
+#view-main .table > thead > tr > th {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--app-text-muted, #6c757d);
+  background: color-mix(in srgb, var(--app-bg, #f5f5f5) 70%, var(--app-surface, #fff)) !important;
+  border-bottom: 1px solid var(--app-border, #e5e7eb) !important;
+}
+
+#view-main .table.table-hover > tbody > tr:hover > * {
+  --bs-table-bg-state: color-mix(in srgb, var(--onneb-brand, #7c3aed) 6%, transparent);
+}
+
+#view-main .list-group {
+  border-radius: var(--app-radius-sm);
+}
+
+#view-main .list-group-item:first-child {
+  border-top-left-radius: var(--app-radius-sm);
+  border-top-right-radius: var(--app-radius-sm);
+}
+
+#view-main .list-group-item:last-child {
+  border-bottom-left-radius: var(--app-radius-sm);
+  border-bottom-right-radius: var(--app-radius-sm);
+}

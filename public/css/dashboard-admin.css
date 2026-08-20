@@ -1,0 +1,184 @@
+.dashboard-admin-wrap {
+  width: 100%;
+  max-width: 100%;
+  flex: 1;
+  min-height: 0;
+  align-self: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1.5rem;
+}
+
+.dashboard-admin-filters .form-select {
+  min-width: 7rem;
+}
+
+.dashboard-kpi-card {
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: var(--app-radius, 0.9rem);
+  box-shadow: var(--app-shadow);
+}
+
+.dashboard-kpi-card--click {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.dashboard-kpi-card--click:hover {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+.dashboard-kpi-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--onneb-text-muted, #6c757d);
+  font-weight: 600;
+}
+
+.dashboard-kpi-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dashboard-chart-card .card-header {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.dashboard-chart-card--compact .card-header {
+  min-height: auto;
+}
+
+.dashboard-chart-card--compact .card-body {
+  min-height: 0;
+}
+
+.dashboard-chart-canvas {
+  display: block;
+  width: 100% !important;
+  max-height: 200px;
+  height: 200px !important;
+}
+
+.dashboard-chart-canvas--donut {
+  max-height: 180px;
+  height: 180px !important;
+}
+
+.dashboard-chart-canvas--line {
+  max-height: 170px;
+  height: 170px !important;
+}
+
+.dashboard-chart-canvas--vendedor {
+  max-height: 260px;
+  height: 260px !important;
+}
+
+.dashboard-top-table-wrap {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.dashboard-top-table {
+  font-size: 0.78rem;
+}
+
+.dashboard-top-table th,
+.dashboard-top-table td {
+  vertical-align: middle;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+.dashboard-top-rank {
+  width: 1.75rem;
+  text-align: center;
+}
+
+.dashboard-top-cod {
+  white-space: nowrap;
+  max-width: 5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dashboard-top-desc {
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+  .dashboard-kpi-value {
+    font-size: 1rem;
+  }
+
+  .dashboard-chart-canvas,
+  .dashboard-chart-canvas--vendedor {
+    max-height: 220px;
+    height: 220px !important;
+  }
+}
+
+/* Inicio vendedor */
+.vendedor-inicio-docs-table-wrap {
+  max-height: 420px;
+  overflow-y: auto;
+}
+
+.vendedor-inicio-docs-table-wrap table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.vendedor-inicio-doc-ref {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.vendedor-inicio-tareas-wrap {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.vendedor-inicio-tareas-wrap table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* Inicio cajero */
+.cajero-inicio-facturas-wrap,
+.cajero-inicio-compras-wrap {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.cajero-inicio-facturas-wrap table th,
+.cajero-inicio-compras-wrap table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.cajero-inicio-chart-body {
+  min-height: 320px;
+}
+
+.transporte-inicio-table-wrap {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.transporte-inicio-table-wrap table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  white-space: nowrap;
+}

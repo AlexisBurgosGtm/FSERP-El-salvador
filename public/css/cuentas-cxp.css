@@ -1,0 +1,330 @@
+/**
+ * Cuentas por cobrar / pagar
+ * Scroll de página (main-content usa overflow:hidden + align-items-stretch).
+ */
+
+.main-content > .cxp-wrap {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1.25rem;
+}
+
+.main-content > .prc-editor-wrap {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+.prc-editor-wrap {
+  gap: 0.65rem;
+}
+
+.prc-editor-wrap .prc-editor-header,
+.prc-editor-wrap .prc-editor-meta {
+  flex-shrink: 0;
+}
+
+.prc-editor-wrap .prc-editor-meta {
+  position: relative;
+  z-index: 40;
+  overflow: visible !important;
+}
+
+.prc-editor-wrap .prc-editor-meta > .card-body {
+  overflow: visible;
+}
+
+.prc-editor-wrap .prc-editor-main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+.prc-editor-wrap .prc-editor-panel {
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.prc-editor-wrap .prc-editor-panel > .card-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.prc-editor-wrap .prc-panel-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prc-editor-wrap .prc-editor-actions {
+  flex-shrink: 0;
+}
+
+.prc-suggest {
+  z-index: 50;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--bs-body-bg, #fff);
+}
+
+@media (max-width: 991.98px) {
+  .prc-editor-wrap .prc-editor-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cxp-wrap {
+  max-width: 100%;
+}
+
+.cxp-summary .card-body {
+  min-width: 12rem;
+}
+
+.cxp-vista-btns .btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cxp-cal-cell--clickable {
+  cursor: pointer;
+}
+
+.cxp-cal-cell--clickable:hover {
+  border-color: var(--bs-primary, #0d6efd);
+  box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25);
+}
+
+.cxp-cal-day-table tbody tr.cxp-cal-day-row {
+  cursor: pointer;
+}
+
+.cxp-cal-day-table tbody tr.cxp-cal-day-row:hover td {
+  background-color: rgba(13, 110, 253, 0.06);
+}
+
+.cxp-cal-day-table {
+  font-size: 0.78rem;
+}
+
+.cxp-cal-day-table th,
+.cxp-cal-day-table td {
+  padding: 0.3rem 0.45rem;
+  vertical-align: middle;
+}
+
+.cxp-table tbody tr.cxp-row,
+.cxp-table tbody tr.cxp-resumen-row,
+.cxp-table tbody tr.cxp-prod-row {
+  cursor: pointer;
+}
+
+.cxp-table tbody tr.cxp-row-vencido td {
+  background-color: rgba(220, 53, 69, 0.06);
+}
+
+.cxp-table tfoot td {
+  border-top: 2px solid var(--bs-border-color, #dee2e6);
+}
+
+@media (max-width: 767.98px) {
+  .cxp-summary {
+    width: 100%;
+  }
+
+  .cxp-summary .card-body {
+    justify-content: space-between;
+  }
+}
+
+.swal2-popup .cxp-menu-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.swal2-popup .cxp-menu-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 6rem;
+  height: 5.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.4rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  font-size: 0.68rem;
+  line-height: 1.15;
+  text-align: center;
+  white-space: normal;
+}
+
+.swal2-popup .cxp-menu-btn i {
+  font-size: 1.4rem;
+}
+
+.swal2-popup .cxp-menu-btn span {
+  display: block;
+}
+
+.swal2-popup .cxp-menu-btn.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+  color: #fff;
+}
+
+.swal2-popup .cxp-menu-btn.btn-success:hover {
+  background-color: #157347;
+  border-color: #146c43;
+  color: #fff;
+}
+
+@media (max-width: 575.98px) {
+  .swal2-popup .cxp-menu-btn {
+    height: 5rem;
+    font-size: 0.6rem;
+  }
+
+  .swal2-popup .cxp-menu-btn i {
+    font-size: 1.2rem;
+  }
+}
+
+.cxp-historial-table {
+  font-size: 0.72rem;
+}
+
+.cxp-historial-table .table {
+  font-size: inherit;
+}
+
+.cxp-historial-table th,
+.cxp-historial-table td {
+  padding: 0.2rem 0.35rem;
+  vertical-align: middle;
+}
+
+.cxp-historial-table .badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.cxp-cal-wrap .card-body {
+  padding: 1rem;
+}
+
+.cxp-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.cxp-cal-weekday {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--bs-secondary-color, #6c757d);
+  padding: 0.25rem 0;
+}
+
+.cxp-cal-cell {
+  min-height: 4.5rem;
+  border: 1px solid var(--bs-border-color, #dee2e6);
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.4rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cxp-cal-cell--muted {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: transparent;
+}
+
+.cxp-cal-cell--today {
+  border-color: var(--bs-primary, #0d6efd);
+  box-shadow: inset 0 0 0 1px var(--bs-primary, #0d6efd);
+}
+
+.cxp-cal-cell--due {
+  background: rgba(13, 110, 253, 0.06);
+}
+
+.cxp-cal-cell--overdue {
+  background: rgba(220, 53, 69, 0.08);
+  border-color: rgba(220, 53, 69, 0.35);
+}
+
+.cxp-cal-day {
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.cxp-cal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin-top: auto;
+}
+
+.cxp-cal-count {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--bs-primary, #0d6efd);
+}
+
+.cxp-cal-cell--overdue .cxp-cal-count {
+  color: var(--bs-danger, #dc3545);
+}
+
+.cxp-cal-amount {
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.15;
+  word-break: break-word;
+}
+
+@media (max-width: 767.98px) {
+  .cxp-cal-cell {
+    min-height: 3.5rem;
+    padding: 0.25rem;
+  }
+
+  .cxp-cal-day {
+    font-size: 0.72rem;
+  }
+
+  .cxp-cal-count,
+  .cxp-cal-amount {
+    font-size: 0.58rem;
+  }
+}

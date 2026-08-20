@@ -1,0 +1,134 @@
+.config-general-wrap {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  align-self: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 1rem;
+}
+
+.config-general-panel {
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+}
+
+.config-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 0.45rem;
+  align-items: stretch;
+}
+
+.config-sino-grid {
+  display: contents;
+}
+
+.config-general-panel .config-card-compact {
+  border: 1px solid var(--app-border, #e0e0e0);
+  border-radius: var(--app-radius, 0.9rem);
+  box-shadow: var(--app-shadow);
+  height: 100%;
+}
+
+.config-general-panel .config-card-compact .card-body {
+  padding: 0.45rem 0.65rem;
+}
+
+.config-general-panel .card-title {
+  color: var(--app-text, #1a1a1a);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.config-general-panel .card-text,
+.config-general-panel .config-invsaldo-status {
+  color: var(--app-text-muted, #666);
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.config-general-panel .config-field-label {
+  font-size: 0.68rem;
+  color: var(--app-text-muted, #666);
+  margin-bottom: 0.15rem;
+}
+
+.config-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.config-card-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.config-general-panel .config-sino-toggle {
+  flex-shrink: 0;
+  min-width: 2.85rem;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.config-general-panel .config-sino-toggle--wide {
+  min-width: 5.25rem;
+  letter-spacing: 0.02em;
+}
+
+.config-general-panel .config-sino-toggle:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.config-general-panel .input-group .form-control {
+  border-color: var(--app-border, #ddd);
+  color: var(--app-text, #1a1a1a);
+  font-size: 0.78rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.config-general-panel .btn-toggle-pass {
+  border-color: var(--app-border, #ddd);
+  color: var(--app-text-muted, #666);
+  background: var(--app-surface, #fafafa);
+  padding: 0.25rem 0.5rem;
+}
+
+.config-general-panel .btn-toggle-pass:hover {
+  background: #f0f0f0;
+  color: var(--app-text, #1a1a1a);
+}
+
+.config-general-panel .btn-actualizar-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+  font-size: 0.72rem;
+  color: var(--btn-fg-guardar, #fff) !important;
+  background: linear-gradient(145deg, #3b82f6, #2563eb) !important;
+  border: 1px solid #2563eb !important;
+  white-space: nowrap;
+  padding: 0.25rem 0.55rem;
+}
+
+.config-general-panel .btn-actualizar-pass:hover {
+  color: var(--btn-fg-guardar, #fff) !important;
+  opacity: 0.92;
+}
+
+@media (min-width: 1200px) {
+  .config-cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

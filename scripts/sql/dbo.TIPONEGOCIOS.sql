@@ -1,0 +1,27 @@
+-- Catálogo de tipos de negocio por empresa (campo TIPONEGOCIO en CLIENTES)
+IF NOT EXISTS (
+  SELECT 1 FROM sys.tables t
+  INNER JOIN sys.schemas s ON t.schema_id = s.schema_id
+  WHERE s.name = N'dbo' AND t.name = N'TIPONEGOCIOS'
+)
+BEGIN
+  CREATE TABLE dbo.TIPONEGOCIOS (
+    EMPNIT varchar(50) NULL,
+    TIPONEGOCIO varchar(100) NULL
+  );
+END
+GO
+
+-- Semilla desde valores ya usados en CLIENTES (por empresa)
+INSERT INTO dbo.TIPONEGOCIOS (EMPNIT, TIPONEGOCIO)
+SELECT DISTINCT c.EMPNIT, LTRIM(RTRIM(c.TIPONEGOCIO))
+FROM dbo.CLIENTES c
+WHERE c.EMPNIT IS NOT NULL
+  AND c.TIPONEGOCIO IS NOT NULL
+  AND LTRIM(RTRIM(c.TIPONEGOCIO)) <> ''
+  AND NOT EXISTS (
+    SELECT 1 FROM dbo.TIPONEGOCIOS t
+    WHERE t.EMPNIT = c.EMPNIT
+      AND t.TIPONEGOCIO = LTRIM(RTRIM(c.TIPONEGOCIO))
+  );
+GO
