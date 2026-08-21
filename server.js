@@ -280,6 +280,7 @@ app.use('/api/config', configRouter);
 app.use('/api/roles-usuarios', rolesUsuariosRouter);
 app.use('/api/pos', posRouter);
 app.use('/api/comandas-restaurante', comandasRestauranteRouter);
+app.use('/api/despachos-en-cocina', require('./routes/despachos-en-cocina'));
 app.use('/api/cotizaciones', cotizacionesRouter);
 app.use('/api/fraccionamiento-fac', fraccionamientoFacRouter);
 app.use('/api/formatos-impresion', formatosImpresionRouter);

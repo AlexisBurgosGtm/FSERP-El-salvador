@@ -17,6 +17,7 @@ const TipoEmpleadoAccess = {
     'pedidos-mostrador',
     'comandas-restaurante',
     'facturacion',
+    'facturas-electronicas',
     'facturacion-completa',
     'notas-credito',
     'notas-abono',
@@ -35,11 +36,16 @@ const TipoEmpleadoAccess = {
     'cuentas-cobrar',
     'recibos-caja-cxc',
     'cuentas-pagar',
+    'retenciones-isr',
+    'retenciones-iva',
+    'retenciones-isr-recibidas',
+    'retenciones-iva-recibidas',
     'libro-compras',
     'libro-ventas',
     'libro-diario',
     'libro-mayor',
     'libro-balance',
+    'inventario-fiscal',
     'nomenclatura-contable',
     'formatos-contables',
     'configuraciones-contabilidad',
@@ -98,8 +104,10 @@ const TipoEmpleadoAccess = {
     'roles-usuarios',
     'tipo-documentos',
     'formatos-impresion',
+    'credenciales-fel',
     'updater',
-    'licencia'],
+    'licencia',
+  ],
 
   MENU_BY_TIPO: {
     1: null,
@@ -108,6 +116,7 @@ const TipoEmpleadoAccess = {
       'pedidos-mostrador',
       'comandas-restaurante',
       'facturacion',
+      'facturas-electronicas',
       'facturacion-completa',
       'notas-credito',
       'notas-abono',
@@ -126,11 +135,16 @@ const TipoEmpleadoAccess = {
       'cuentas-cobrar',
       'recibos-caja-cxc',
       'cuentas-pagar',
+      'retenciones-isr',
+      'retenciones-iva',
+      'retenciones-isr-recibidas',
+      'retenciones-iva-recibidas',
       'libro-compras',
       'libro-ventas',
       'libro-diario',
       'libro-mayor',
       'libro-balance',
+      'inventario-fiscal',
       'nomenclatura-contable',
       'formatos-contables',
       'configuraciones-contabilidad',
@@ -169,7 +183,8 @@ const TipoEmpleadoAccess = {
       'nomina-igss',
       'clientes',
       'proveedores',
-      'rutas'],
+      'rutas',
+    ],
     3: [
       'inicio',
       'pedidos-mostrador',
@@ -177,7 +192,8 @@ const TipoEmpleadoAccess = {
       'cotizaciones',
       'fraccionamiento-fac',
       'tareas',
-      'inventario'],
+      'inventario',
+    ],
     4: ['inicio', 'clientes', 'rutas', 'documentos', 'lista-facturas', 'resumen-del-dia'],
     5: [
       'inicio',
@@ -193,7 +209,8 @@ const TipoEmpleadoAccess = {
       'pendientes-entrega',
       'despachos-en-cocina',
       'embarques',
-      'asignacion-pedidos'],
+      'asignacion-pedidos',
+    ],
     6: [
       'inicio',
       'embarques',
@@ -202,7 +219,8 @@ const TipoEmpleadoAccess = {
       'mantenimiento-llantas',
       'registro-kilometrajes',
       'vehiculos',
-      'plataformas'],
+      'plataformas',
+    ],
     7: [
       'inicio',
       'libro-compras',
@@ -210,17 +228,21 @@ const TipoEmpleadoAccess = {
       'libro-diario',
       'libro-mayor',
       'libro-balance',
+      'inventario-fiscal',
       'movimientos-banco',
       'bancos',
-      'cuentas-bancarias'],
+      'cuentas-bancarias',
+    ],
     8: [
       'inicio',
       'facturacion',
+      'facturas-electronicas',
       'facturacion-completa',
       'fraccionamiento-fac',
       'corte-caja',
       'cuentas-cobrar',
-      'recibos-caja-cxc'],
+      'recibos-caja-cxc',
+    ],
   },
 
   _accesoLoaded: false,
@@ -308,6 +330,11 @@ const TipoEmpleadoAccess = {
     const key = String(menuKey || '').trim();
     if (!key) return false;
     if (key === 'licencia') return true;
+    // Super usuario: Actualizador BD siempre, aunque no esté en la licencia.
+    if (key === 'updater') {
+      const user = sessionUser || this.getSessionUser();
+      if (user?.superUser) return true;
+    }
     if (typeof LicenseAccess !== 'undefined' && !LicenseAccess.canAccessMenu(key)) {
       return false;
     }
@@ -355,7 +382,9 @@ const TipoEmpleadoAccess = {
       const li = link.closest('li');
       if (!li) return;
       let visible = false;
-      if (key === 'licencia') {
+      if (typeof LicenseAccess !== 'undefined' && LicenseAccess.isLicenseExemptMenu?.(key)) {
+        visible = true;
+      } else if (key === 'licencia') {
         visible = true;
       } else if (!licenseOk && typeof LicenseAccess !== 'undefined') {
         visible = LicenseAccess.canAccessMenu(key);
