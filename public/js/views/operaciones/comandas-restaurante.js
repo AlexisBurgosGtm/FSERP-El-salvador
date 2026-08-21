@@ -1124,6 +1124,7 @@ const ComandasRestauranteView = {
     PosDocSearchUI.bind(this, 'pos', {
       getEditable: () => true,
       allowEmptySearch: true,
+      keepProductSearchAfterAdd: true,
       buscarProductos: this.buscarProductos,
       onProductPick: (row) => this.onProductClick(row),
     });
