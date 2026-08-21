@@ -52,8 +52,8 @@ const CorteCajaView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return 'Q 0.00';
-    return `Q ${n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    if (!Number.isFinite(n)) return '$0.00';
+    return `$ ${n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   },
 
   selectedCaja() {

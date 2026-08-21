@@ -20,7 +20,7 @@ const DescargarCatalogoView = {
   formatMoney(v) {
     const n = Number(v);
     if (!Number.isFinite(n)) return '—';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   apiUrl(path) {

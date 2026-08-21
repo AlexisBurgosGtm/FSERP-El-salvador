@@ -24,7 +24,7 @@ const NominaValesView = {
   formatMoney(v) {
     const n = Number(v);
     if (!Number.isFinite(n)) return '—';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatFecha(v) {
@@ -441,7 +441,7 @@ const NominaValesView = {
             <div class="col-6">
               <label class="form-label small mb-0" for="nv-monto">Monto <span class="text-danger">*</span></label>
               <div class="input-group input-group-sm">
-                <span class="input-group-text">Q</span>
+                <span class="input-group-text">$</span>
                 <input type="number" id="nv-monto" class="form-control text-end" min="0.01" step="0.01" value="${this.escapeHtml(montoVal)}">
               </div>
             </div>
@@ -628,7 +628,7 @@ const NominaValesView = {
           <div class="mb-0">
             <label class="form-label small mb-0" for="nv-pago-monto">Importe abonado <span class="text-danger">*</span></label>
             <div class="input-group input-group-sm">
-              <span class="input-group-text">Q</span>
+              <span class="input-group-text">$</span>
               <input type="number" id="nv-pago-monto" class="form-control text-end" min="0.01" step="0.01" max="${saldo}" value="${saldo}">
             </div>
           </div>

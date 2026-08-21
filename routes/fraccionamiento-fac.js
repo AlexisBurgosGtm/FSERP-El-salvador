@@ -1077,7 +1077,7 @@ router.post('/:id/fraccionar-cf', async (req, res) => {
     const maximoLegal = await getMaximoFraccionamientoLegal(pool);
     if (maximo > maximoLegal) {
       return res.status(400).json({
-        error: `El máximo no puede superar Q ${maximoLegal.toFixed(2)} (configuración legal)`,
+        error: `El máximo no puede superar $ ${maximoLegal.toFixed(2)} (configuración legal)`,
       });
     }
     const cola = await loadColaRow(pool, empnit, id);

@@ -46,8 +46,8 @@ const NotasAbonoView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatFechaPedido(row) {
@@ -1115,7 +1115,7 @@ const NotasAbonoView = {
                 ${DocFecha.renderField('na-doc-fecha', this._pedido?.header)}
               </div>
               <div class="ms-auto text-end">
-                <h3 class="pos-header-total mb-0" id="na-header-total">Q 0.00</h3>
+                <h3 class="pos-header-total mb-0" id="na-header-total">$0.00</h3>
                 <div class="pos-header-items" id="na-header-items">0 items</div>
               </div>
             </div>

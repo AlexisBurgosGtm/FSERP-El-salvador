@@ -185,12 +185,12 @@ const MenuFavoritos = {
                     <div class="col-12">
                       <label class="form-label small mb-0" for="asist-precio">Precio de venta (margen sobre venta)</label>
                       <p class="small text-muted mb-1">Costo ÷ (1 − %). El % es ganancia sobre el precio final.</p>
-                      <input type="text" id="asist-precio" class="form-control form-control-sm text-danger fw-bold" readonly value="Q 0.00">
+                      <input type="text" id="asist-precio" class="form-control form-control-sm text-danger fw-bold" readonly value="$0.00">
                     </div>
                     <div class="col-12">
                       <label class="form-label small mb-0" for="asist-precio-markup">Precio de venta (costo + %)</label>
                       <p class="small text-muted mb-1">Costo × (1 + %). El % se aplica sobre el costo.</p>
-                      <input type="text" id="asist-precio-markup" class="form-control form-control-sm text-primary fw-bold" readonly value="Q 0.00">
+                      <input type="text" id="asist-precio-markup" class="form-control form-control-sm text-primary fw-bold" readonly value="$0.00">
                     </div>
                   </div>
                 </div>
@@ -247,8 +247,8 @@ const MenuFavoritos = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (!Number.isFinite(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatFechaDoc(value) {
@@ -309,8 +309,8 @@ const MenuFavoritos = {
       const costo = Number(costoEl?.value);
       const pct = Number(ganEl?.value);
       if (!Number.isFinite(costo) || costo < 0 || !Number.isFinite(pct)) {
-        if (precioEl) precioEl.value = 'Q 0.00';
-        if (precioMarkupEl) precioMarkupEl.value = 'Q 0.00';
+        if (precioEl) precioEl.value = '$0.00';
+        if (precioMarkupEl) precioMarkupEl.value = '$0.00';
         return;
       }
       if (pct >= 100) {

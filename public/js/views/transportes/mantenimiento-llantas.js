@@ -49,8 +49,8 @@ const MantenimientoLlantasView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   vehiculoLabel(row) {

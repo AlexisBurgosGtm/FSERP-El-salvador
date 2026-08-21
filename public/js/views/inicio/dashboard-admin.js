@@ -45,8 +45,8 @@ const DashboardAdminView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   mesLabel(mes) {
@@ -316,7 +316,7 @@ const DashboardAdminView = {
             callbacks: {
               label(ctx) {
                 const v = Math.abs(ctx.raw);
-                return `${ctx.dataset.label}: ${v.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' })}`;
+                return `${ctx.dataset.label}: ${v.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}`;
               },
             },
           },
@@ -327,7 +327,7 @@ const DashboardAdminView = {
             stacked: true,
             ticks: {
               callback: (v) =>
-                Number(v).toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 0 }),
+                Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
             },
           },
         },
@@ -371,9 +371,7 @@ const DashboardAdminView = {
                   ctx.dataIndex === 0
                     ? Number(vc.documentosVenta) || 0
                     : Number(vc.documentosCompra) || 0;
-                return ` ${Number(v).toLocaleString('es-GT', {
-                  style: 'currency',
-                  currency: 'GTQ',
+                return ` ${Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD',
                 })} · ${docs} doc(s)`;
               },
             },
@@ -384,9 +382,7 @@ const DashboardAdminView = {
             beginAtZero: true,
             ticks: {
               callback(v) {
-                return Number(v).toLocaleString('es-GT', {
-                  style: 'currency',
-                  currency: 'GTQ',
+                return Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD',
                   maximumFractionDigits: 0,
                 });
               },
@@ -467,7 +463,7 @@ const DashboardAdminView = {
             callbacks: {
               label(ctx) {
                 if (ctx.raw === null || ctx.raw === undefined) return null;
-                return `${ctx.dataset.label}: ${Number(ctx.raw).toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' })}`;
+                return `${ctx.dataset.label}: ${Number(ctx.raw).toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}`;
               },
             },
           },
@@ -480,7 +476,7 @@ const DashboardAdminView = {
           y: {
             ticks: {
               callback: (v) =>
-                Number(v).toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 0 }),
+                Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
             },
           },
         },
@@ -530,7 +526,7 @@ const DashboardAdminView = {
             callbacks: {
               label(ctx) {
                 const v = Math.abs(ctx.raw);
-                return `${ctx.dataset.label}: ${v.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' })}`;
+                return `${ctx.dataset.label}: ${v.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}`;
               },
             },
           },
@@ -539,7 +535,7 @@ const DashboardAdminView = {
           x: {
             ticks: {
               callback: (v) =>
-                Number(v).toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 0 }),
+                Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
             },
           },
           y: {

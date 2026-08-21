@@ -35,7 +35,7 @@ const NominaEmpleadosView = {
   formatMoney(v) {
     const n = Number(v);
     if (Number.isNaN(n)) return '—';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   apiUrl() {

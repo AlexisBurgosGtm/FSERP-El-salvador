@@ -330,6 +330,9 @@
       const msg = String(data?.mensaje || '').trim() || 'Nuevo pedido de mostrador';
       F.toast(msg, 'info');
     });
+    if (typeof DespachosEnCocinaView !== 'undefined' && typeof DespachosEnCocinaView.bindSocket === 'function') {
+      DespachosEnCocinaView.bindSocket();
+    }
     if (typeof AutorizacionesUI !== 'undefined') {
       AutorizacionesUI.bindSocket();
     }

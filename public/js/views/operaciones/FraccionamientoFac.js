@@ -281,7 +281,7 @@ const FraccionamientoFacView = {
 
     if (enCurso) {
       return `<span class="badge text-bg-primary" title="Fraccionamiento en curso">
-        <i class="fa-solid fa-spinner fa-spin me-1"></i>${pct}% · Q ${this.escapeHtml(this.formatMoney(emitido))} / Q ${this.escapeHtml(this.formatMoney(total))}
+        <i class="fa-solid fa-spinner fa-spin me-1"></i>${pct}% · $ ${this.escapeHtml(this.formatMoney(emitido))} / $ ${this.escapeHtml(this.formatMoney(total))}
       </span>`;
     }
     if (enCola) {
@@ -295,7 +295,7 @@ const FraccionamientoFacView = {
     if (emitido > 0.005) {
       const docs = Number(row.DOCS_FRAC) || 0;
       return `<span class="badge text-bg-warning" title="Emitido / Total (CODEMBARQUE FRAC)">
-        ${pct}% · Q ${this.escapeHtml(this.formatMoney(emitido))} / Q ${this.escapeHtml(this.formatMoney(total))}
+        ${pct}% · $ ${this.escapeHtml(this.formatMoney(emitido))} / $ ${this.escapeHtml(this.formatMoney(total))}
         ${docs ? ` · ${docs} CF` : ''}
       </span>`;
     }
@@ -322,7 +322,7 @@ const FraccionamientoFacView = {
     if (!(params.maximo > 0)) return 'Indique un Máximo válido en Parámetros';
     if (params.maximo < params.minimo) return 'El Máximo debe ser mayor o igual al Mínimo';
     if (params.maximo > maxLegal) {
-      return `El Máximo no puede superar Q ${this.formatMoney(maxLegal)} (límite en Configuraciones)`;
+      return `El Máximo no puede superar $ ${this.formatMoney(maxLegal)} (límite en Configuraciones)`;
     }
     if (!this.MINUTOS_OPTS.includes(Number(params.minutos))) return 'Seleccione un intervalo de minutos válido';
     return null;
@@ -415,7 +415,7 @@ const FraccionamientoFacView = {
             <td class="text-end">${this.formatCell(r.CORRELATIVO)}</td>
             <td class="small">${this.formatCell(r.DOC_NOMCLIE)}</td>
             <td class="small fw-semibold ${pagoClass}">${this.escapeHtml(pago)}</td>
-            <td class="text-end text-nowrap">Q ${this.escapeHtml(this.formatMoney(r.TOTALPRECIO))}</td>
+            <td class="text-end text-nowrap">$ ${this.escapeHtml(this.formatMoney(r.TOTALPRECIO))}</td>
             <td class="text-nowrap">${this.renderProgressBadge(r)}</td>
             <td>${this.formatFecha(r.FECHA_INICIO)}</td>
             <td>${this.formatCell(r.HORA_INICIO)}</td>
@@ -481,7 +481,7 @@ const FraccionamientoFacView = {
                     min="0.01" step="0.01" value="${this.escapeHtml(p.minimo)}">
                 </div>
                 <div class="col-6 col-md-2">
-                <div class="form-text small mb-0">Tope legal Q ${this.escapeHtml(this.formatMoney(this._maximoLegal))}</div>
+                <div class="form-text small mb-0">Tope legal $ ${this.escapeHtml(this.formatMoney(this._maximoLegal))}</div>
                 <label class="form-label small mb-0" for="ffac-param-maximo">Máximo</label>
                   <input type="number" class="form-control form-control-sm" id="ffac-param-maximo"
                     min="0.01" step="0.01" max="${this.escapeHtml(this._maximoLegal)}"
@@ -639,7 +639,7 @@ const FraccionamientoFacView = {
     const val = Number(inp.value);
     if (Number.isFinite(val) && val > maxLegal) {
       inp.value = String(maxLegal);
-      F.toast(`Máximo limitado a Q ${this.formatMoney(maxLegal)} (configuración)`, 'info');
+      F.toast(`Máximo limitado a $ ${this.formatMoney(maxLegal)} (configuración)`, 'info');
     }
   },
 
@@ -683,7 +683,7 @@ const FraccionamientoFacView = {
       html: `
         <p class="small text-muted mb-2">Fuente: <strong>${this.escapeHtml(doc.CODDOC)} #${this.escapeHtml(doc.CORRELATIVO)}</strong>
           ${doc.TIPODOC ? `· ${this.escapeHtml(doc.TIPODOC)}` : ''}</p>
-        <p class="mb-3">Total: <strong>Q ${this.escapeHtml(this.formatMoney(doc.TOTALPRECIO))}</strong></p>
+        <p class="mb-3">Total: <strong>$ ${this.escapeHtml(this.formatMoney(doc.TOTALPRECIO))}</strong></p>
         <div class="mb-2">
           <label class="form-label small mb-0" for="ffac-nit">NIT</label>
           <input type="text" class="form-control form-control-sm" id="ffac-nit" name="DOC_NIT"
@@ -843,7 +843,7 @@ const FraccionamientoFacView = {
       title: esReanudacion ? '¿Reanudar fraccionamiento?' : '¿Fraccionar en CF?',
       html: `
         <p class="mb-2">Fuente <strong>${this.escapeHtml(doc.CODDOC)} #${this.escapeHtml(doc.CORRELATIVO)}</strong>
-        · Total Q <strong>${this.escapeHtml(this.formatMoney(total))}</strong></p>
+        · Total $ <strong>${this.escapeHtml(this.formatMoney(total))}</strong></p>
         ${
           esReanudacion
             ? `<p class="mb-2 text-warning">Ya hay <strong>${docsFrac}</strong> CF asociadas (CODEMBARQUE FRAC) por
@@ -853,7 +853,7 @@ const FraccionamientoFacView = {
         }
         <p class="mb-2">Se repartirán productos (mismo CODPROD, CODMEDIDA, PRECIO) en
         <code>${this.escapeHtml(params.coddoc)}</code> a CF, entre
-        Q ${this.escapeHtml(this.formatMoney(params.minimo))} y Q ${this.escapeHtml(this.formatMoney(params.maximo))},
+        $ ${this.escapeHtml(this.formatMoney(params.minimo))} y $ ${this.escapeHtml(this.formatMoney(params.maximo))},
         cada ${params.minutos} min.</p>
         <p class="small text-muted mb-0">Estimado restante: ~${estMin}–${estMax} factura(s). Parámetros bloqueados; puede agregar otras facturas a la cola.</p>`,
       icon: 'question',
@@ -947,7 +947,7 @@ const FraccionamientoFacView = {
             );
           } else {
             F.toast(
-              `CF ${res.documento?.CODDOC} #${res.documento?.CORRELATIVO} — Q ${this.formatMoney(res.documento?.TOTALPRECIO)}`,
+              `CF ${res.documento?.CODDOC} #${res.documento?.CORRELATIVO} — $ ${this.formatMoney(res.documento?.TOTALPRECIO)}`,
               'success'
             );
           }

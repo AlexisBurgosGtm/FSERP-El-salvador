@@ -89,7 +89,7 @@ let F = {
   /**
    * Formato de moneda
    */
-  formatCurrency(amount, currency = 'MXN', locale = 'es-MX') {
+  formatCurrency(amount, currency = 'USD', locale = 'es-SV') {
     return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
   },
 

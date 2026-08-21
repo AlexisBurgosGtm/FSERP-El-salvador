@@ -47,7 +47,7 @@ const ConfigGeneralView = {
       fallbackDesc:
         'Monto máximo permitido por factura fraccionada (CF). Debe actualizarse según la legislación vigente.',
       placeholder: '2500',
-      fieldLabel: 'Monto máximo (Q)',
+      fieldLabel: 'Monto máximo ($)',
       inputType: 'number',
       inputStep: '0.01',
       icon: 'fa-file-invoice-dollar',

@@ -71,8 +71,8 @@ const KilometrajesView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatKm(value) {
@@ -347,7 +347,7 @@ const KilometrajesView = {
     return `
       <label class="form-label small mb-0" for="km-${name}">${this.escapeHtml(label)}</label>
       <div class="input-group input-group-sm">
-        <span class="input-group-text">Q</span>
+        <span class="input-group-text">$</span>
         <input type="number" id="km-${name}" name="${name}" class="form-control form-control-sm"
           value="${this.escapeHtml(displayVal)}" ${req} step="${step}">
       </div>`;

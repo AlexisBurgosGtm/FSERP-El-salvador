@@ -39,8 +39,8 @@ const ComprasView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatQty(value) {
@@ -1388,7 +1388,7 @@ const ComprasView = {
                 ${DocFecha.renderField('compras-doc-fecha', this._compra?.header)}
               </div>
               <div class="pos-header-summary ms-auto text-end">
-                <h3 class="pos-header-total mb-0" id="compras-header-total">Q 0.00</h3>
+                <h3 class="pos-header-total mb-0" id="compras-header-total">$0.00</h3>
                 <div class="pos-header-items" id="compras-header-items">0 items</div>
               </div>
             </div>

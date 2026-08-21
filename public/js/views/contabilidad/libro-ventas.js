@@ -84,7 +84,7 @@ const LibroVentasView = {
   formatMoney(value) {
     const n = Number(value);
     if (Number.isNaN(n)) return '—';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   fechaDisplay(row) {

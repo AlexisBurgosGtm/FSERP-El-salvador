@@ -35,8 +35,8 @@ const MovimientosBancoView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   roundCentavos(n) {
@@ -454,7 +454,7 @@ const MovimientosBancoView = {
             <div class="col-12 col-sm-6 col-lg">
               <label class="form-label small mb-0" for="mb-importe">Importe</label>
               <div class="input-group input-group-sm mb-importe-group">
-                <span class="input-group-text">Q</span>
+                <span class="input-group-text">$</span>
                 <input type="number" id="mb-importe" class="form-control mb-importe-input text-end" min="0.01" step="0.01"
                   value="${this.escapeHtml(f.IMPORTE)}" ${importeLocked || isEdit ? 'readonly' : ''}>
               </div>

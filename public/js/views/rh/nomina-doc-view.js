@@ -28,8 +28,8 @@ function createNominaDocView(cfg) {
 
     formatMoney(value) {
       const n = Number(value);
-      if (Number.isNaN(n)) return 'Q 0.00';
-      return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+      if (Number.isNaN(n)) return '$0.00';
+      return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
     },
 
     statusLabel(code) {
@@ -189,7 +189,7 @@ function createNominaDocView(cfg) {
       const cls = extraClass ? ` ${extraClass}` : '';
       return `
         <div class="input-group input-group-sm nomina-money${cls}">
-          <span class="input-group-text">Q</span>
+          <span class="input-group-text">$</span>
           <input type="number" step="0.001" class="form-control form-control-sm" id="${fieldId}"
             value="${value !== '' && value !== null && value !== undefined ? Number(value) : ''}" ${ro}>
         </div>`;

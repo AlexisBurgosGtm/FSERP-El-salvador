@@ -42,8 +42,8 @@ const CotizacionesView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatQty(value) {
@@ -1149,7 +1149,7 @@ const CotizacionesView = {
                 ${this.renderTipofacPrioridadFields()}
               </div>
               <div class="pos-header-summary ms-auto text-end">
-                <h3 class="pos-header-total mb-0" id="pos-header-total">Q 0.00</h3>
+                <h3 class="pos-header-total mb-0" id="pos-header-total">$0.00</h3>
                 <div class="pos-header-items" id="pos-header-items">0 items</div>
               </div>
             </div>

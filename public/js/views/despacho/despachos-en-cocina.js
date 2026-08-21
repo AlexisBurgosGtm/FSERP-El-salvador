@@ -2,6 +2,7 @@
  * Despacho → Despachos en Cocina.
  * Líneas CRS con SOLICITADO=1; despachar → SOLICITADO=2.
  * Filtro por Ubicación (CLASIFICACIONTRES).
+ * Socket `cocina:nuevo`: toast no bloqueante + filas nuevas sin recargar.
  */
 const DespachosEnCocinaView = {
   _container: null,
@@ -9,6 +10,7 @@ const DespachosEnCocinaView = {
   _ubicaciones: [],
   _filterUbicacion: '',
   _busyId: null,
+  _socketBound: false,
 
   escapeHtml(value) {
     if (value === null || value === undefined) return '';
@@ -39,6 +41,75 @@ const DespachosEnCocinaView = {
     });
     const segment = path ? (path.startsWith('/') ? path : `/${path}`) : '';
     return `/api/despachos-en-cocina${segment}?${params}`;
+  },
+
+  isViewActive() {
+    return (
+      typeof F !== 'undefined' &&
+      typeof F.getActiveMenuKey === 'function' &&
+      F.getActiveMenuKey() === 'despachos-en-cocina' &&
+      !!this._container
+    );
+  },
+
+  bindSocket() {
+    if (this._socketBound || typeof io === 'undefined') return;
+    const socket =
+      (typeof F !== 'undefined' && typeof F.getSocket === 'function' && F.getSocket()) ||
+      window.OnnebSocket ||
+      null;
+    if (!socket) return;
+    socket.on('cocina:nuevo', (data) => this.onCocinaNuevo(data));
+    this._socketBound = true;
+  },
+
+  rowMatchesFilter(row) {
+    if (this._filterUbicacion === '' || this._filterUbicacion == null) return true;
+    return String(row?.CODCLATRES ?? '') === String(this._filterUbicacion);
+  },
+
+  onCocinaNuevo(data) {
+    if (!this.isViewActive()) return;
+    const userEmp = typeof F !== 'undefined' ? F.getEmpNit() : '';
+    if (data?.empnit && userEmp && String(data.empnit) !== String(userEmp)) return;
+
+    const msg = String(data?.mensaje || '').trim() || 'Nuevos productos en cocina';
+    this.showLiveNotice(msg);
+
+    const incoming = Array.isArray(data?.rows) ? data.rows : [];
+    if (!incoming.length) return;
+
+    const existing = new Set(this._rows.map((r) => String(r.ID)));
+    const toAdd = incoming.filter(
+      (r) => r && r.ID != null && !existing.has(String(r.ID)) && this.rowMatchesFilter(r)
+    );
+    if (!toAdd.length) return;
+
+    this._rows = toAdd.concat(this._rows);
+    this.updateTableView();
+  },
+
+  /** Aviso no bloqueante (no usa Swal: no cierra el confirm de Despachar). */
+  showLiveNotice(message) {
+    const wrap = this._container?.querySelector('.despachos-cocina-wrap');
+    if (!wrap) {
+      if (typeof F !== 'undefined') F.toast(message, 'info');
+      return;
+    }
+    let el = wrap.querySelector('#dec-live-notice');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'dec-live-notice';
+      el.setAttribute('role', 'status');
+      el.className = 'alert alert-info py-2 px-3 mb-3 dec-live-notice';
+      wrap.insertBefore(el, wrap.firstChild);
+    }
+    el.textContent = message;
+    el.style.display = '';
+    if (this._noticeTimer) clearTimeout(this._noticeTimer);
+    this._noticeTimer = setTimeout(() => {
+      if (el) el.style.display = 'none';
+    }, 4500);
   },
 
   ubicacionOptionsHtml() {
@@ -212,6 +283,7 @@ const DespachosEnCocinaView = {
 
   async load(container) {
     this._container = container;
+    this.bindSocket();
     container.innerHTML = '<p class="text-muted p-3">Cargando despachos en cocina…</p>';
     try {
       await this.fetchData();

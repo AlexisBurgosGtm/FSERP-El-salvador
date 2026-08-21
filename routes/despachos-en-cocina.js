@@ -6,10 +6,13 @@ const express = require('express');
 const sql = require('mssql');
 const { isDbConfigured } = require('../config/database');
 const { STATUS_ANULADO } = require('../lib/documento-status');
+const {
+  TIPODOC_COMANDA,
+  SOLICITADO_COCINA,
+  SELECT_COCINA_ROWS,
+} = require('../lib/despachos-en-cocina');
 
 const router = express.Router();
-const TIPODOC_COMANDA = 'CRS';
-const SOLICITADO_COCINA = 1;
 const SOLICITADO_DESPACHADO = 2;
 
 function getEmpNitFromReq(req) {
@@ -80,39 +83,7 @@ router.get('/', async (req, res) => {
     }
 
     const result = await request.query(`
-      SELECT
-        l.Id AS ID,
-        l.CODPROD,
-        l.DESPROD,
-        l.CODMEDIDA,
-        l.CANTIDAD,
-        l.OBS,
-        ISNULL(l.SOLICITADO, 0) AS SOLICITADO,
-        d.CODDOC,
-        d.CORRELATIVO,
-        d.CODVEN,
-        d.CODEMBARQUE,
-        ISNULL(NULLIF(LTRIM(RTRIM(e.NOMEMPLEADO)), ''), ISNULL(d.USUARIO, '—')) AS MESERO,
-        ISNULL(
-          NULLIF(LTRIM(RTRIM(m.DESMESA)), ''),
-          ISNULL(NULLIF(LTRIM(RTRIM(m.CODMESA)), ''), ISNULL(NULLIF(LTRIM(RTRIM(d.OBS)), ''), ISNULL(d.CODEMBARQUE, '—')))
-        ) AS MESA,
-        p.CODCLATRES,
-        ISNULL(c3.DESCLATRES, 'Sin ubicación') AS UBICACION
-      FROM dbo.DOCPRODUCTOS l
-      INNER JOIN dbo.DOCUMENTOS d
-        ON d.EMPNIT = l.EMPNIT AND d.CODDOC = l.CODDOC AND d.CORRELATIVO = l.CORRELATIVO
-      INNER JOIN dbo.TIPODOCUMENTOS t
-        ON t.EMPNIT = d.EMPNIT AND t.CODDOC = d.CODDOC
-      LEFT JOIN dbo.PRODUCTOS p
-        ON p.EMPNIT = l.EMPNIT AND LTRIM(RTRIM(p.CODPROD)) = LTRIM(RTRIM(l.CODPROD))
-      LEFT JOIN dbo.CLASIFICACIONTRES c3
-        ON c3.EMPNIT = p.EMPNIT AND c3.CODCLATRES = p.CODCLATRES
-      LEFT JOIN dbo.Empleados e
-        ON e.EMPNIT = d.EMPNIT AND e.CODEMPLEADO = d.CODVEN
-      LEFT JOIN dbo.RESTAURANTE_MESAS m
-        ON m.EMPNIT = d.EMPNIT
-        AND LTRIM(RTRIM(ISNULL(d.CODEMBARQUE, ''))) = CAST(m.ID AS VARCHAR(30))
+      ${SELECT_COCINA_ROWS}
       WHERE l.EMPNIT = @EMPNIT
         AND t.TIPODOC = '${TIPODOC_COMANDA}'
         AND ISNULL(d.STATUS, '') <> '${STATUS_ANULADO}'

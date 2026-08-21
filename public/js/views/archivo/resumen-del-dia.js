@@ -26,7 +26,9 @@ const ResumenDelDiaView = {
 
   formatMoney(n) {
     const v = Number(n) || 0;
-    return v.toLocaleString('es-GT', {
+    return v.toLocaleString('es-SV', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });

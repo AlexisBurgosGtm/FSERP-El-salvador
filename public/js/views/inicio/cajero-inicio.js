@@ -20,8 +20,8 @@ const CajeroInicioView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatFecha(value) {
@@ -229,9 +229,7 @@ const CajeroInicioView = {
             callbacks: {
               label: (ctx) => {
                 const row = data[ctx.dataIndex] || {};
-                const importe = Number(ctx.raw || 0).toLocaleString('es-GT', {
-                  style: 'currency',
-                  currency: 'GTQ',
+                const importe = Number(ctx.raw || 0).toLocaleString('es-SV', { style: 'currency', currency: 'USD',
                 });
                 const unidades = Number(row.totalUnidades || 0).toLocaleString('es-GT');
                 return `${importe} · ${unidades} uds.`;
@@ -244,9 +242,9 @@ const CajeroInicioView = {
             beginAtZero: true,
             ticks: {
               callback: (v) =>
-                Number(v).toLocaleString('es-GT', { style: 'currency', currency: 'GTQ', maximumFractionDigits: 0 }),
+                Number(v).toLocaleString('es-SV', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
             },
-            title: { display: true, text: 'Importe (Q)' },
+            title: { display: true, text: 'Importe ($)' },
           },
           y: { ticks: { font: { size: 11 }, autoSkip: false } },
         },

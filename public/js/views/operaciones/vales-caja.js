@@ -24,7 +24,7 @@ const ValesCajaView = {
   formatMoney(v) {
     const n = Number(v);
     if (!Number.isFinite(n)) return '—';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatFecha(v) {
@@ -290,7 +290,7 @@ const ValesCajaView = {
             <div class="col-6">
               <label class="form-label small mb-0" for="vc-importe">Importe (efectivo) <span class="text-danger">*</span></label>
               <div class="input-group input-group-sm">
-                <span class="input-group-text">Q</span>
+                <span class="input-group-text">$</span>
                 <input type="number" id="vc-importe" class="form-control text-end" min="0.01" step="0.01" value="${this.escapeHtml(importeVal)}">
               </div>
             </div>

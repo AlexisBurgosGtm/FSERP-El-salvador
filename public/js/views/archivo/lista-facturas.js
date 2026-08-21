@@ -26,8 +26,8 @@ const ListaFacturasView = {
 
   formatMoney(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (!Number.isFinite(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatDateDdMmYyyy(value) {

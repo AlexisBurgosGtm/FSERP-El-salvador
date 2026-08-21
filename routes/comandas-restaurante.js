@@ -1192,6 +1192,9 @@ router.post('/pedidos/:coddoc/:correlativo/enviar-cocina', async (req, res) => {
     if (!pending.length) {
       return res.json({ ok: true, updated: 0, pedido: pedidoPrev, message: 'No hay productos pendientes de enviar' });
     }
+    const pendingIds = pending
+      .map((l) => parseInt(l.ID ?? l.Id, 10))
+      .filter((n) => Number.isFinite(n) && n > 0);
 
     const result = await pool
       .request()
@@ -1206,6 +1209,29 @@ router.post('/pedidos/:coddoc/:correlativo/enviar-cocina', async (req, res) => {
       `);
     const updated = result.rowsAffected?.[0] || 0;
     const pedido = await loadPedido(pool, empnit, coddoc, correlativo);
+
+    try {
+      const { fetchCocinaRowsByIds } = require('../lib/despachos-en-cocina');
+      const { emitCocinaNuevo } = require('../lib/socket-hub');
+      const rows = await fetchCocinaRowsByIds(pool, empnit, pendingIds);
+      const mesa = String(rows[0]?.MESA || pedido?.header?.OBS || pedidoPrev?.header?.OBS || '').trim();
+      const n = rows.length || updated;
+      const mensaje =
+        n === 1
+          ? `Cocina: 1 producto nuevo${mesa ? ` · Mesa ${mesa}` : ''}`
+          : `Cocina: ${n} productos nuevos${mesa ? ` · Mesa ${mesa}` : ''}`;
+      emitCocinaNuevo(req.app.locals.io, empnit, {
+        rows,
+        count: n,
+        mesa,
+        coddoc,
+        correlativo,
+        mensaje,
+      });
+    } catch (sockErr) {
+      console.warn('[enviar-cocina] socket cocina:nuevo', sockErr.message);
+    }
+
     res.json({ ok: true, updated, pedido });
   } catch (err) {
     console.warn('[API POST /comandas-restaurante/pedidos/enviar-cocina]', err.message);

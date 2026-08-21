@@ -76,8 +76,8 @@ const FacturacionView = {
   },
   formatMoney(value) {
     const n = Number(value);
-    if (Number.isNaN(n)) return 'Q 0.00';
-    return n.toLocaleString('es-GT', { style: 'currency', currency: 'GTQ' });
+    if (Number.isNaN(n)) return '$0.00';
+    return n.toLocaleString('es-SV', { style: 'currency', currency: 'USD' });
   },
 
   formatQty(value) {
@@ -531,7 +531,7 @@ const FacturacionView = {
                     min="0" step="0.01" value="0"${isCre ? ' disabled' : ''}>
                 </div>
               </div>
-              <div class="mt-2 small text-end text-muted" id="fac-finalizar-fpago-sum">Suma: ${this.escapeHtml(isCre ? 'Q 0.00' : this.formatMoney(totalPrecio))} / ${this.escapeHtml(total)}</div>
+              <div class="mt-2 small text-end text-muted" id="fac-finalizar-fpago-sum">Suma: ${this.escapeHtml(isCre ? '$0.00' : this.formatMoney(totalPrecio))} / ${this.escapeHtml(total)}</div>
               <div class="mt-2 mb-0">
                 <label class="form-label small mb-0" for="fac-finalizar-fpago-desc">Detalles del pago</label>
                 <input type="text" id="fac-finalizar-fpago-desc" class="form-control form-control-sm"
@@ -1968,7 +1968,7 @@ const FacturacionView = {
               <div class="pos-header-summary-wrap ms-auto d-flex flex-wrap align-items-end gap-3">
                 ${this.renderCajaField()}
                 <div class="pos-header-summary text-end">
-                  <h3 class="pos-header-total mb-0" id="fac-header-total">Q 0.00</h3>
+                  <h3 class="pos-header-total mb-0" id="fac-header-total">$0.00</h3>
                   <div class="pos-header-items" id="fac-header-items">0 items</div>
                 </div>
               </div>
