@@ -4,3 +4,4 @@ data/license.json
 data/menu-acceso-tipos.json
 data/menu-acceso-tipos.json.migrated
 .server.pid
+dist-client/

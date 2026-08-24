@@ -8,6 +8,7 @@ const DocOpciones = {
   FACTURA_SE_PASA_A_FRACCIONAMIENTO_AUTOM_OPCION: 'FACTURA SE PASA A FRACCIONAMIENTO AUTOM',
   PERMITE_FRACCIONAMIENTO_FACTURAS_OPCION: 'PERMITE FRACCIONAMIENTO FACTURAS',
   MUESTRA_FORMATO_FEL_ONLINE_OPCION: 'MUESTRA FORMATO FEL ONLINE',
+  IMPRIME_TICKET_AL_GUARDAR_VENTA_OPCION: 'IMPRIME TICKET AL GUARDAR VENTA',
 
   EDITOR_BY_TIPODOC: {
     ENV: { menu: 'pedidos-mostrador', view: () => PosView },
@@ -261,6 +262,34 @@ const DocOpciones = {
     const modo = String(data.modo ?? 'NO').trim().toUpperCase();
     if (modo === 'SI' || modo === 'AMBOS') return modo;
     return 'NO';
+  },
+
+  async fetchImprimeTicketAlGuardarVenta() {
+    const params = new URLSearchParams({
+      opcion: this.IMPRIME_TICKET_AL_GUARDAR_VENTA_OPCION,
+      _: String(Date.now()),
+    });
+    const data = await F.fetchJson(`/api/config/sino?${params}`, { cache: 'no-store' });
+    return String(data.sino ?? 'NO').trim().toUpperCase() === 'SI';
+  },
+
+  /**
+   * Tras finalizar FAC / facturación / DEV / FNC / FNA:
+   * si IMPRIME TICKET AL GUARDAR VENTA = SI → muestra formato imprimible del sistema.
+   * No consulta MUESTRA FORMATO FEL ONLINE (solo aplica en certificación FEL).
+   * @param {{ alreadyPrintedSistema?: boolean, onImprimir?: () => Promise<void>|void }} opts
+   */
+  async maybeImprimirTicketTrasFinalizar(opts = {}) {
+    if (opts.alreadyPrintedSistema) return false;
+    let imprime = false;
+    try {
+      imprime = await this.fetchImprimeTicketAlGuardarVenta();
+    } catch (_) {
+      return false;
+    }
+    if (!imprime || typeof opts.onImprimir !== 'function') return false;
+    await opts.onImprimir();
+    return true;
   },
 
   esTipoCertificableFel(tipodoc) {

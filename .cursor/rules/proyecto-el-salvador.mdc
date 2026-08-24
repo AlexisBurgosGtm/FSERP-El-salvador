@@ -10,7 +10,7 @@ En este workspace:
 - **FS-SV** = este proyecto (`FsERP-EL SALVADOR`, comercial **FS ERP**).
 - **Los ERP** = **OnneB + FS-SV**. Si el usuario dice “Los ERP”, el cambio aplica en ambos (salvo que diga solo uno).
 
-- Sin FEL Guatemala. DTE SV = fase posterior.
+- Sin FEL Guatemala. DTE SV = fase posterior (ver regla `dte-sv-checklist.mdc`: al implementar, alinear tipodocs con cálculos/vistas ya hechas en OnneB).
 - Licencias vía Mariandre → **Licencias FS ERP** únicamente (no generador local en este repo).
 - Puerto típico: **6501**
 

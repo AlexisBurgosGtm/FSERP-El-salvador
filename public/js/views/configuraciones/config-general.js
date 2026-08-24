@@ -74,7 +74,8 @@ const ConfigGeneralView = {
       opcion: 'IMPRIME TICKET AL GUARDAR VENTA',
       title: 'Imprime ticket al guardar venta',
       icon: 'fa-receipt',
-      fallbackDesc: 'Imprime ticket automáticamente al finalizar la venta',
+      fallbackDesc:
+        'Al finalizar facturas (FAC/facturación) y devoluciones (DEV/FNC/FNA), muestra el formato imprimible del sistema. No usa «Muestra formato FEL online» (esa opción solo aplica al certificar FEL).',
     },
     {
       opcion: 'MUESTRA DATOS EN CORTE DE CAJA',

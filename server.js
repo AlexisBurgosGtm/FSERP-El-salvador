@@ -1,6 +1,8 @@
-require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
+const { envFilePath } = require('./lib/app-paths');
+
+require('dotenv').config({ path: envFilePath() });
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -8,7 +10,7 @@ const sql = require('mssql');
 const { getDbConfig, isDbConfigured } = require('./config/database');
 const { registerSocketHandlers } = require('./lib/socket-hub');
 
-const PORT = process.env.PORT || 6500;
+const PORT = process.env.PORT || 6501;
 
 const app = express();
 const server = http.createServer(app);
@@ -112,6 +114,8 @@ const cotizacionesRouter = require('./routes/cotizaciones');
 const fraccionamientoFacRouter = require('./routes/fraccionamiento-fac');
 const formatosImpresionRouter = require('./routes/formatos-impresion');
 const facturacionRouter = require('./routes/facturacion');
+const felRouter = require('./routes/fel');
+const credencialesFelRouter = require('./routes/credenciales-fel');
 const notasCreditoRouter = require('./routes/notas-credito');
 const notasAbonoRouter = require('./routes/notas-abono');
 const notasDebitoRouter = require('./routes/notas-debito');
@@ -168,9 +172,9 @@ app.locals.io = io;
 /** Licencia de instalación: limita APIs por módulo comprado. */
 app.use(licenseMiddleware);
 
-const publicDir = path.join(__dirname, 'public');
-const dataDir = path.join(__dirname, 'data');
-const fotosProductosDir = path.join(__dirname, 'Fotos_productos');
+const publicDir = require('./lib/app-paths').publicDir();
+const dataDir = require('./lib/app-paths').writableDataDir();
+const fotosProductosDir = require('./lib/app-paths').fotosProductosDir();
 const buildMetaPath = path.join(publicDir, 'build-meta.json');
 
 if (!fs.existsSync(fotosProductosDir)) {
@@ -285,6 +289,8 @@ app.use('/api/cotizaciones', cotizacionesRouter);
 app.use('/api/fraccionamiento-fac', fraccionamientoFacRouter);
 app.use('/api/formatos-impresion', formatosImpresionRouter);
 app.use('/api/facturacion', facturacionRouter);
+app.use('/api/fel', felRouter);
+app.use('/api/credenciales-fel', credencialesFelRouter);
 app.use('/api/notas-credito', notasCreditoRouter);
 app.use('/api/notas-abono', notasAbonoRouter);
 app.use('/api/notas-debito', notasDebitoRouter);
@@ -353,7 +359,8 @@ app.get('/api/health', async (_req, res) => {
 registerSocketHandlers(io);
 
 server.listen(PORT, () => {
-  const pidPath = path.join(__dirname, '.server.pid');
+  const { pidFilePath, getDataRoot: dataRootFn, isPackaged: packagedFn } = require('./lib/app-paths');
+  const pidPath = pidFilePath();
   try {
     fs.writeFileSync(pidPath, String(process.pid), 'utf8');
   } catch (err) {
@@ -369,7 +376,12 @@ server.listen(PORT, () => {
   process.once('exit', clearPid);
 
   console.log(`FS_ERP en http://localhost:${PORT}`);
-  console.log('Detener: npm stop');
+  console.log(`Datos locales: ${dataRootFn()}`);
+  if (packagedFn()) {
+    console.log('Modo: ejecutable empaquetado (.env y Fotos_productos junto al .exe)');
+  } else {
+    console.log('Detener: npm stop');
+  }
   const appToken = getAppToken();
   if (appToken) {
     console.log(`[TOKEN] instalación: ${appToken}`);
@@ -384,7 +396,7 @@ server.listen(PORT, () => {
   } catch (err) {
     console.warn('[Licencia]', err.message);
   }
-  if (process.env.BUMP_WATCH !== 'false') {
+  if (!require('./lib/app-paths').isPackaged() && process.env.BUMP_WATCH !== 'false') {
     require('./scripts/watch-build').start();
     watchBuildMetaBroadcast();
   }
@@ -392,7 +404,7 @@ server.listen(PORT, () => {
 
 process.on('SIGINT', async () => {
   try {
-    const pidPath = path.join(__dirname, '.server.pid');
+    const pidPath = require('./lib/app-paths').pidFilePath();
     if (fs.existsSync(pidPath)) fs.unlinkSync(pidPath);
   } catch {
     /* ignore */

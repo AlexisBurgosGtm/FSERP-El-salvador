@@ -1,0 +1,34 @@
+---
+description: Al implementar DTE/FEL SV en FS-SV, alinear tipos y reportes con OnneB
+alwaysApply: true
+---
+
+# DTE / FEL El Salvador — tipodocs y checklist
+
+## Tipodocs ERP → MH (vigente en FS-SV)
+
+| TIPODOC | DTE MH | Uso |
+|---------|--------|-----|
+| **FEF** | 01 | Factura electrónica |
+| **FEC** | 03 | Comprobante de Crédito Fiscal |
+| **FNC** | 05 | Nota de Crédito |
+| **FAC** | — | Interno (no certifica) |
+
+Motor: `lib/dte/` · API: `/api/fel`, `/api/credenciales-fel` · SQL: `scripts/sql/dbo.DTE_SV_SCHEMA.sql`
+
+**Updater (BD compartida Los ERP):**  
+`node scripts/seed-update-query-dte-sv-schema.js` → `UPDATE_QUERIES` VERSION 2026 / DB P → ejecutar desde Actualizador BD en cualquiera de los dos ERP.
+
+## No copiar FEL GT
+
+- No reutilizar Infile / XML SAT Guatemala.
+- Credenciales y JSON son MH SV (firmador + recepción).
+
+## Al ampliar DTE (nuevos tipodocs 05/06/11/…)
+
+Auditar filtros `FAC`/`FEF`/`FES`/`FEC` en:
+
+- Relleno inventario (`calcular-min-max`)
+- Reportes ventas, corte/cuadre, libros, CXC, documentos
+
+Confirmar `TIPOM = SALIDA` (−1) en tipodocs de venta electrónica.

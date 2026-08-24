@@ -12,6 +12,27 @@ const CLIENTES_DIAVISITA_OPTIONS = [
   'DOMINGO',
 ].map((v) => ({ value: v, label: v }));
 
+const CLIENTES_TIPO_DOC_DTE = [
+  { value: '', label: '(Sin definir)' },
+  { value: '36', label: '36 — NIT' },
+  { value: '13', label: '13 — DUI' },
+  { value: '03', label: '03 — Pasaporte' },
+  { value: '37', label: '37 — Otro' },
+];
+
+const CLIENTES_REGIMEN_DTE = [
+  { value: '', label: '(Sin definir)' },
+  { value: '1', label: '1 — Régimen general' },
+  { value: '2', label: '2 — Otro (catálogo CAT-033)' },
+];
+
+const CLIENTES_TIPO_CONTRIB = [
+  { value: '', label: '(Sin definir)' },
+  { value: 'GRANDE', label: 'Gran contribuyente' },
+  { value: 'MEDIANO', label: 'Mediano' },
+  { value: 'OTRO', label: 'Otro' },
+];
+
 const CLIENTES_TIPO_OPTIONS = [
   { value: 'VENTAS', label: 'VENTAS' },
   { value: 'PROSPECTO', label: 'PROSPECTO' },
@@ -359,6 +380,16 @@ const ClientesView = {
       TIPONEGOCIO: row.TIPONEGOCIO ?? '',
       NEGOCIO: row.NEGOCIO ?? '',
       TIPO: row.TIPO ?? 'VENTAS',
+      NRC: row.NRC ?? '',
+      TIPODOCUMENTO_DTE: row.TIPODOCUMENTO_DTE ?? '',
+      NUMDOCUMENTO_DTE: row.NUMDOCUMENTO_DTE ?? '',
+      COD_ACTIVIDAD: row.COD_ACTIVIDAD ?? '',
+      DESC_ACTIVIDAD: row.DESC_ACTIVIDAD ?? '',
+      REGIMEN_DTE: row.REGIMEN_DTE ?? '',
+      TIPO_CONTRIBUYENTE: row.TIPO_CONTRIBUYENTE ?? '',
+      DEPARTAMENTO_MH: row.DEPARTAMENTO_MH ?? '',
+      MUNICIPIO_MH: row.MUNICIPIO_MH ?? '',
+      DISTRITO_MH: row.DISTRITO_MH ?? '',
     };
   },
 
@@ -400,6 +431,25 @@ const ClientesView = {
         this.selectField('CODRUTA', 'Ruta', L.rutas, r.CODRUTA),
         this.selectField('DIAVISITA', 'Día visita', CLIENTES_DIAVISITA_OPTIONS, r.DIAVISITA)
       ),
+      `<h6 class="small fw-semibold text-primary mt-2 mb-1">Datos DTE (receptor)</h6>`,
+      this.row2(
+        this.selectField('TIPODOCUMENTO_DTE', 'Tipo doc. DTE', CLIENTES_TIPO_DOC_DTE, r.TIPODOCUMENTO_DTE),
+        this.inputField('NUMDOCUMENTO_DTE', 'Núm. documento DTE', r.NUMDOCUMENTO_DTE)
+      ),
+      this.row2(
+        this.inputField('NRC', 'NRC', r.NRC),
+        this.selectField('REGIMEN_DTE', 'Régimen DTE', CLIENTES_REGIMEN_DTE, r.REGIMEN_DTE)
+      ),
+      this.row2(
+        this.selectField('TIPO_CONTRIBUYENTE', 'Tipo contribuyente', CLIENTES_TIPO_CONTRIB, r.TIPO_CONTRIBUYENTE),
+        this.inputField('COD_ACTIVIDAD', 'Cód. actividad', r.COD_ACTIVIDAD)
+      ),
+      this.fieldBlock(this.inputField('DESC_ACTIVIDAD', 'Desc. actividad', r.DESC_ACTIVIDAD)),
+      this.row2(
+        this.inputField('DEPARTAMENTO_MH', 'Depto MH', r.DEPARTAMENTO_MH),
+        this.inputField('MUNICIPIO_MH', 'Municipio MH', r.MUNICIPIO_MH)
+      ),
+      this.fieldBlock(this.inputField('DISTRITO_MH', 'Distrito MH (CAT-008)', r.DISTRITO_MH)),
     ];
 
     if (!compact) {
@@ -449,6 +499,16 @@ const ClientesView = {
       'TIPONEGOCIO',
       'NEGOCIO',
       'TIPO',
+      'NRC',
+      'TIPODOCUMENTO_DTE',
+      'NUMDOCUMENTO_DTE',
+      'COD_ACTIVIDAD',
+      'DESC_ACTIVIDAD',
+      'REGIMEN_DTE',
+      'TIPO_CONTRIBUYENTE',
+      'DEPARTAMENTO_MH',
+      'MUNICIPIO_MH',
+      'DISTRITO_MH',
     ];
     const data = {};
     names.forEach((name) => {
@@ -485,6 +545,16 @@ const ClientesView = {
       TIPONEGOCIO: data.TIPONEGOCIO || null,
       NEGOCIO: data.NEGOCIO || null,
       TIPO: data.TIPO || null,
+      NRC: data.NRC || null,
+      TIPODOCUMENTO_DTE: data.TIPODOCUMENTO_DTE || null,
+      NUMDOCUMENTO_DTE: data.NUMDOCUMENTO_DTE || null,
+      COD_ACTIVIDAD: data.COD_ACTIVIDAD || null,
+      DESC_ACTIVIDAD: data.DESC_ACTIVIDAD || null,
+      REGIMEN_DTE: data.REGIMEN_DTE || null,
+      TIPO_CONTRIBUYENTE: data.TIPO_CONTRIBUYENTE || null,
+      DEPARTAMENTO_MH: data.DEPARTAMENTO_MH || null,
+      MUNICIPIO_MH: data.MUNICIPIO_MH || null,
+      DISTRITO_MH: data.DISTRITO_MH || null,
     };
     if (profile === 'facturacion') {
       delete payload.LATITUDCLIENTE;

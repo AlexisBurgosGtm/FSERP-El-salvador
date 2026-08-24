@@ -655,6 +655,7 @@
     'pedidos-mostrador': 'Pedidos de Mostrador',
     'comandas-restaurante': 'Comandas Restaurante',
     facturacion: 'Facturas normales',
+    'facturas-electronicas': 'Facturas Electrónicas',
     'facturacion-completa': 'Facturación',
     'notas-credito': 'Notas de Credito (clientes)',
     'notas-abono': 'Notas de Abono',
@@ -688,6 +689,7 @@
     'productos-precios': 'Productos y precios',
     'lista-precios': 'Lista Precios',
     inventario: 'Inventario',
+    'relleno-inventario': 'Relleno de inventario',
     'entradas-inventario': 'Entradas de inventario',
     'salidas-inventario': 'Salidas de inventario',
     'inventario-retroactivo': 'Inventario Retroactivo',
@@ -728,6 +730,7 @@
     'mesas-restaurante': 'Mesas Restaurante',
     empresas: 'Empresas',
     'config-general': 'Config general',
+    'credenciales-fel': 'Credenciales DTE',
     'roles-usuarios': 'Roles de usuarios',
     'tipo-documentos': 'Tipo documentos',
     'formatos-impresion': 'Formatos de impresión',
@@ -791,6 +794,7 @@
       ComandasRestauranteView.load(mainContent);
     } else if (key === 'facturacion' && typeof FacturacionView !== 'undefined') {
       FacturacionView.load(mainContent);
+    } else if (key === 'facturas-electronicas' && typeof FacturasElectronicasView !== 'undefined') {
       FacturasElectronicasView.load(mainContent);
     } else if (key === 'facturacion-completa' && typeof FacturacionCompletaView !== 'undefined') {
       FacturacionCompletaView.load(mainContent);
@@ -832,6 +836,8 @@
       RecibirTrasladoView.load(mainContent);
     } else if (key === 'inventario' && typeof InventarioView !== 'undefined') {
       InventarioView.load(mainContent);
+    } else if (key === 'relleno-inventario' && typeof InventarioRellenoView !== 'undefined') {
+      InventarioRellenoView.load(mainContent);
     } else if (key === 'inventario-retroactivo' && typeof InventarioRetroactivoView !== 'undefined') {
       InventarioRetroactivoView.load(mainContent);
     } else if (
@@ -968,11 +974,12 @@
       ServicioMecanicaView.load(mainContent);
     } else if (key === 'config-general' && typeof ConfigGeneralView !== 'undefined') {
       ConfigGeneralView.load(mainContent);
+    } else if (key === 'credenciales-fel' && typeof CredencialesFelView !== 'undefined') {
+      CredencialesFelView.load(mainContent);
     } else if (key === 'roles-usuarios' && typeof RolesUsuariosView !== 'undefined') {
       RolesUsuariosView.load(mainContent);
     } else if (key === 'licencia' && typeof LicenciaView !== 'undefined') {
       LicenciaView.load(mainContent);
-      CredencialesFelView.load(mainContent);
     } else {
       mainContent.classList.add('align-items-center', 'justify-content-center');
       mainContent.classList.remove('align-items-stretch', 'justify-content-start');

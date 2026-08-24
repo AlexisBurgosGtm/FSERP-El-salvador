@@ -4,14 +4,7 @@ const { isDbConfigured } = require('../config/database');
 const { assertAdminPass } = require('../lib/config-auth');
 const { normalizeDocumentoRows, nowParts, parseFechaInput, fechaIsoFromRow } = require('../lib/documento-fecha');
 const { STATUS_OPERADO, STATUS_ANULADO } = require('../lib/documento-status');
-/** FEL Guatemala eliminado en FS ERP (Proyecto El Salvador). DTE SV: fase posterior. */
-async function certificarDocumentoFel() {
-  const err = new Error(
-    'Certificación FEL (Guatemala) no está disponible en FS ERP. La facturación electrónica SV se implementará en una fase posterior.'
-  );
-  err.statusCode = 501;
-  throw err;
-}
+const { certificarDocumentoFel } = require('../lib/dte/certificar');
 const { getTipomDocumento } = require('../lib/inventario');
 const { getIvaFactor, splitIvaFromTotal } = require('../lib/impuestos');
 const { getSettingValue, ensureSettingDefault, SETTING_OPCION } = require('../lib/settings');

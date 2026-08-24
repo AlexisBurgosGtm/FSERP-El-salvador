@@ -1,5 +1,6 @@
 /**
- * Vista Facturación — Facturas normales (TIPODOC=FAC) o Electrónicas (FEF/FEC/FES).
+ * Vista Facturación — Facturas normales (TIPODOC=FAC) o Electrónicas DTE SV (FEF/FEC/FES).
+ * FEF=DTE 01 Factura, FEC=DTE 03 CCF, FNC=DTE 05 NC.
  */
 const FacturacionView = {
   _grupo: 'fac',
@@ -838,30 +839,46 @@ const FacturacionView = {
     F.toast('Pedido finalizado', 'success');
     this._pedido = null;
     await this.showList();
-    await this.maybeAutoCertificarTrasFinalizar(coddocFinalizar, correlativoFinalizar, tipodocFinalizar);
+    const cert = await this.maybeAutoCertificarTrasFinalizar(
+      coddocFinalizar,
+      correlativoFinalizar,
+      tipodocFinalizar
+    );
     await this.maybeAutoFraccionarTrasFinalizar(coddocFinalizar, correlativoFinalizar, tipodocFinalizar);
+    if (typeof DocOpciones !== 'undefined' && DocOpciones.maybeImprimirTicketTrasFinalizar) {
+      await DocOpciones.maybeImprimirTicketTrasFinalizar({
+        alreadyPrintedSistema: !!(cert && cert.printedSistema),
+        onImprimir: () => this.imprimirPedido(coddocFinalizar, correlativoFinalizar),
+      });
+    }
   },
 
   async maybeAutoCertificarTrasFinalizar(coddoc, correlativo, tipodoc) {
     const tipo = String(tipodoc || '').trim().toUpperCase();
-    if (!DocOpciones.esTipoCertificableFel(tipo)) return;
+    if (!DocOpciones.esTipoCertificableFel(tipo)) return { certifico: false, printedSistema: false };
     let auto = false;
     try {
       auto = await DocOpciones.fetchCertificaAlFinalizar();
     } catch (_) {
-      return;
+      return { certifico: false, printedSistema: false };
     }
-    if (!auto) return;
+    if (!auto) return { certifico: false, printedSistema: false };
+    let printedSistema = false;
     try {
       await DocOpciones.certificarYMostrarFormatos(coddoc, correlativo, {
-        onImprimirSistema: () => this.imprimirPedido(coddoc, correlativo),
+        onImprimirSistema: async () => {
+          printedSistema = true;
+          await this.imprimirPedido(coddoc, correlativo);
+        },
       });
       await this.fetchPedidosList();
       this.refreshListDom();
+      return { certifico: true, printedSistema };
     } catch (err) {
       F.alert('Error FEL', err.message || 'No se pudo certificar automáticamente', 'error');
       await this.fetchPedidosList().catch(() => {});
       this.refreshListDom();
+      return { certifico: false, printedSistema: false };
     }
   },
 

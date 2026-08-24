@@ -42,6 +42,16 @@ const BODY_FIELDS = [
   'TIPONEGOCIO',
   'NEGOCIO',
   'TIPO',
+  'NRC',
+  'TIPODOCUMENTO_DTE',
+  'NUMDOCUMENTO_DTE',
+  'COD_ACTIVIDAD',
+  'DESC_ACTIVIDAD',
+  'REGIMEN_DTE',
+  'TIPO_CONTRIBUYENTE',
+  'DEPARTAMENTO_MH',
+  'MUNICIPIO_MH',
+  'DISTRITO_MH',
 ];
 
 const LIST_FROM = `
@@ -232,6 +242,16 @@ function bindClienteRequest(request, data) {
   request.input('TIPONEGOCIO', sql.VarChar, data.TIPONEGOCIO);
   request.input('NEGOCIO', sql.VarChar, data.NEGOCIO);
   request.input('TIPO', sql.VarChar, data.TIPO);
+  request.input('NRC', sql.VarChar, data.NRC);
+  request.input('TIPODOCUMENTO_DTE', sql.VarChar, data.TIPODOCUMENTO_DTE);
+  request.input('NUMDOCUMENTO_DTE', sql.VarChar, data.NUMDOCUMENTO_DTE);
+  request.input('COD_ACTIVIDAD', sql.VarChar, data.COD_ACTIVIDAD);
+  request.input('DESC_ACTIVIDAD', sql.NVarChar, data.DESC_ACTIVIDAD);
+  request.input('REGIMEN_DTE', sql.VarChar, data.REGIMEN_DTE);
+  request.input('TIPO_CONTRIBUYENTE', sql.VarChar, data.TIPO_CONTRIBUYENTE);
+  request.input('DEPARTAMENTO_MH', sql.VarChar, data.DEPARTAMENTO_MH);
+  request.input('MUNICIPIO_MH', sql.VarChar, data.MUNICIPIO_MH);
+  request.input('DISTRITO_MH', sql.VarChar, data.DISTRITO_MH);
 }
 
 function validateCliente(data) {
@@ -496,7 +516,9 @@ router.post('/', async (req, res) => {
         TELEFONOCLIENTE, EMAILCLIENTE, LATITUDCLIENTE, LONGITUDCLIENTE,
         CODRUTA, SALDO, FECHAINICIO,
         HABILITADO, DIAVISITA, LIMITECREDITO, DIASCREDITO, PROVINCIA,
-        TIPONEGOCIO, NEGOCIO, TIPO
+        TIPONEGOCIO, NEGOCIO, TIPO,
+        NRC, TIPODOCUMENTO_DTE, NUMDOCUMENTO_DTE, COD_ACTIVIDAD, DESC_ACTIVIDAD,
+        REGIMEN_DTE, TIPO_CONTRIBUYENTE, DEPARTAMENTO_MH, MUNICIPIO_MH, DISTRITO_MH
       )
       OUTPUT INSERTED.CODCLIENTE AS CODCLIENTE
       VALUES (
@@ -505,7 +527,9 @@ router.post('/', async (req, res) => {
         @TELEFONOCLIENTE, @EMAILCLIENTE, @LATITUDCLIENTE, @LONGITUDCLIENTE,
         @CODRUTA, @SALDO, @FECHAINICIO,
         @HABILITADO, @DIAVISITA, @LIMITECREDITO, @DIASCREDITO, @PROVINCIA,
-        @TIPONEGOCIO, @NEGOCIO, @TIPO
+        @TIPONEGOCIO, @NEGOCIO, @TIPO,
+        @NRC, @TIPODOCUMENTO_DTE, @NUMDOCUMENTO_DTE, @COD_ACTIVIDAD, @DESC_ACTIVIDAD,
+        @REGIMEN_DTE, @TIPO_CONTRIBUYENTE, @DEPARTAMENTO_MH, @MUNICIPIO_MH, @DISTRITO_MH
       )
     `);
     const codcliente = result.recordset[0]?.CODCLIENTE;
@@ -558,7 +582,17 @@ router.put('/:codcliente', async (req, res) => {
         PROVINCIA = @PROVINCIA,
         TIPONEGOCIO = @TIPONEGOCIO,
         NEGOCIO = @NEGOCIO,
-        TIPO = @TIPO
+        TIPO = @TIPO,
+        NRC = @NRC,
+        TIPODOCUMENTO_DTE = @TIPODOCUMENTO_DTE,
+        NUMDOCUMENTO_DTE = @NUMDOCUMENTO_DTE,
+        COD_ACTIVIDAD = @COD_ACTIVIDAD,
+        DESC_ACTIVIDAD = @DESC_ACTIVIDAD,
+        REGIMEN_DTE = @REGIMEN_DTE,
+        TIPO_CONTRIBUYENTE = @TIPO_CONTRIBUYENTE,
+        DEPARTAMENTO_MH = @DEPARTAMENTO_MH,
+        MUNICIPIO_MH = @MUNICIPIO_MH,
+        DISTRITO_MH = @DISTRITO_MH
       WHERE EMPNIT = @EMPNIT AND CODCLIENTE = @CODCLIENTE
     `);
     if (result.rowsAffected[0] === 0) {
