@@ -15,6 +15,8 @@ let isBumping = false;
 const WATCH_DIRS = [
   path.join(root, 'public'),
   path.join(root, 'scripts'),
+  path.join(root, 'lib'),
+  path.join(root, 'routes'),
 ];
 const WATCH_FILES = [path.join(root, 'server.js')];
 
@@ -65,7 +67,7 @@ function watchPath(targetPath) {
 function start() {
   WATCH_DIRS.forEach(watchPath);
   WATCH_FILES.forEach(watchPath);
-  console.log('[Watch] Build counter: vigía public/, scripts/ y server.js');
+  console.log('[Watch] Build counter: vigía public/, lib/, routes/, scripts/ y server.js');
 }
 
 module.exports = { start, runBump };

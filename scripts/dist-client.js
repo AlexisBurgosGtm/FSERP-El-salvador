@@ -236,6 +236,14 @@ function runPkg() {
 
 async function main() {
   log(`Producto: ${PRODUCT}`);
+  const bump = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'bump-build.js')], {
+    cwd: ROOT,
+    stdio: 'inherit',
+  });
+  if (bump.status !== 0) {
+    throw new Error('bump-build falló antes del empaquetado');
+  }
+
   ensureDir(OUT);
   for (const name of fs.readdirSync(OUT)) {
     if (name === '_public_backup') continue;
@@ -256,6 +264,16 @@ async function main() {
     restore();
     rmDir(STAGING_PUBLIC);
   }
+
+  const counterSrc = path.join(ROOT, 'build-counter.json');
+  const metaWritableSrc = path.join(ROOT, 'build-meta.json');
+  if (fs.existsSync(counterSrc)) {
+    fs.copyFileSync(counterSrc, path.join(OUT, 'build-counter.json'));
+  }
+  if (fs.existsSync(metaWritableSrc)) {
+    fs.copyFileSync(metaWritableSrc, path.join(OUT, 'build-meta.json'));
+  }
+
   log(`Listo: ${OUT}`);
   log(`Cliente: copie .env junto a ${EXE_NAME}`);
 }

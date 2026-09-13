@@ -88,7 +88,7 @@ router.get('/from-host', async (_req, res) => {
       token: row.TOKEN,
       empresa: row.EMPRESA,
       license: doc,
-      filename: `onneb-license-${safeToken}.json`,
+      filename: `fserp-license-${safeToken}.json`,
     });
   } catch (err) {
     console.warn('[API GET /license/from-host]', err.message);

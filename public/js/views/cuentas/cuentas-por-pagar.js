@@ -406,7 +406,11 @@ const CuentasPorPagarView = {
         </table>
       </div>
       <p class="small text-muted mt-2 mb-0 text-start">Clic en un documento para ver opciones.</p>
-      <div class="d-flex flex-wrap gap-2 mt-3">
+      <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
+        <div class="form-check me-auto mb-0">
+          <input class="form-check-input" type="checkbox" id="cxp-resumen-incluye-productos">
+          <label class="form-check-label small" for="cxp-resumen-incluye-productos">Incluye productos</label>
+        </div>
         <button type="button" class="btn btn-outline-secondary" id="cxp-resumen-print">
           <i class="fa-solid fa-print me-1"></i>Imprimir
         </button>
@@ -446,19 +450,22 @@ const CuentasPorPagarView = {
 
   bindResumenPendientesActions(ctx) {
     const popup = Swal.getPopup();
+    const readIncluyeProductos = () =>
+      Boolean(popup?.querySelector('#cxp-resumen-incluye-productos')?.checked);
     popup?.querySelector('#cxp-resumen-print')?.addEventListener('click', (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      this.imprimirResumenPendientes(ctx).catch((err) =>
+      this.imprimirResumenPendientes({ ...ctx, incluyeProductos: readIncluyeProductos() }).catch((err) =>
         F.toast(err.message || 'No se pudo imprimir', 'error')
       );
     });
     popup?.querySelector('#cxp-resumen-whatsapp')?.addEventListener('click', (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      this.enviarWhatsappResumenPendientes(ctx).catch((err) =>
-        F.toast(err.message || 'No se pudo abrir WhatsApp', 'error')
-      );
+      this.enviarWhatsappResumenPendientes({
+        ...ctx,
+        incluyeProductos: readIncluyeProductos(),
+      }).catch((err) => F.toast(err.message || 'No se pudo abrir WhatsApp', 'error'));
     });
   },
 
@@ -485,22 +492,36 @@ const CuentasPorPagarView = {
     return parts.join('\n');
   },
 
-  async imprimirResumenPendientes(ctx) {
+  async buildResumenPendientesPrintParts(ctx) {
     if (typeof PrintReport === 'undefined') {
-      F.toast('Impresión no disponible', 'warning');
-      return;
+      throw new Error('Impresión no disponible');
     }
+    await PrintReport.ensureLogo();
     const { partyKind, partyName, codigoLabel, rows } = ctx;
+    const incluyeProductos = Boolean(ctx.incluyeProductos);
     const t = this.resumenPendientesTotales(rows);
     const abonoLabel = partyKind === 'proveedor' ? 'Pagos' : 'Abonos';
     const partyTitle = partyKind === 'proveedor' ? 'Proveedor' : 'Cliente';
     const nit = String(rows?.[0]?.DOC_NIT || '').trim();
     const hoy = this.formatFecha(this.todayIsoDate());
+
+    let lineasByDoc = new Map();
+    if (incluyeProductos && ctx.lineasUrl) {
+      try {
+        const data = await F.fetchJson(ctx.lineasUrl, { cache: 'no-store' });
+        lineasByDoc = this.groupResumenLineasByDoc(data.rows || []);
+      } catch (err) {
+        throw new Error(err.message || 'No se pudieron cargar los productos del resumen');
+      }
+    }
+
     const bodyRows = (rows || []).length
       ? rows
           .map((r) => {
             const saldo = Number(r.SALDO_PENDIENTE ?? r.DOC_SALDO) || 0;
-            return `<tr>
+            const docKey = this.resumenDocKey(r.CODDOC, r.CORRELATIVO);
+            const lineas = lineasByDoc.get(docKey) || [];
+            let html = `<tr>
               <td>${PrintReport.escapeHtml(this.docResumenLabel(r))}</td>
               <td>${PrintReport.escapeHtml(this.formatFecha(r.FECHA))}</td>
               <td>${PrintReport.escapeHtml(this.formatFecha(r.VENCIMIENTO))}</td>
@@ -508,6 +529,10 @@ const CuentasPorPagarView = {
               <td class="text-end">${PrintReport.escapeHtml(this.formatMoney(r.DOC_ABONO))}</td>
               <td class="text-end">${PrintReport.escapeHtml(this.formatMoney(saldo))}</td>
             </tr>`;
+            if (incluyeProductos) {
+              html += this.renderResumenDocProductosPrintRows(lineas);
+            }
+            return html;
           })
           .join('')
       : '<tr><td colspan="6" style="text-align:center;color:#666">Sin documentos pendientes</td></tr>';
@@ -520,6 +545,7 @@ const CuentasPorPagarView = {
           <p><strong>Código:</strong> ${PrintReport.escapeHtml(String(codigoLabel || '—'))}</p>
           ${nit ? `<p><strong>NIT:</strong> ${PrintReport.escapeHtml(nit)}</p>` : ''}
           <p><strong>Fecha:</strong> ${PrintReport.escapeHtml(hoy)}</p>
+          ${incluyeProductos ? '<p><strong>Detalle:</strong> Incluye productos</p>' : ''}
         `,
       })}
       <table class="ecc-table">
@@ -544,34 +570,152 @@ const CuentasPorPagarView = {
         </tfoot>
       </table>
     `;
-
-    await PrintReport.openAndPrint(
-      () =>
-        PrintReport.wrapDocument({
-          title: 'Facturas pendientes',
-          bodyHtml,
-          extraStyles: `
+    const extraStyles = `
         .ecc-table{font-size:11px}
         .ecc-table th,.ecc-table td{padding:5px 7px}
         .ecc-table tbody tr:nth-child(even){background:#fafafa}
         .ecc-table tfoot td{background:#f0f0f0;border-top:2px solid #999}
-      `,
-        }),
-      'width=900,height=700'
-    );
+        .ecc-doc-prods td{background:#f8fafc;padding:4px 6px;border-top:none}
+        .ecc-doc-prods-inner{width:100%;border-collapse:collapse;font-size:10px;margin:2px 0 6px}
+        .ecc-doc-prods-inner th{background:#e8eef5;font-weight:600;padding:3px 5px;border:1px solid #d0d7de;text-align:left}
+        .ecc-doc-prods-inner td{padding:3px 5px;border:1px solid #e5e7eb}
+        .ecc-doc-prods-inner .text-end{text-align:right}
+      `;
+    const html = PrintReport.wrapDocument({
+      title: 'Facturas pendientes',
+      bodyHtml,
+      extraStyles,
+    });
+    const report = {
+      title: 'Facturas pendientes',
+      empresa: PrintReport.getEmpresaNombre(),
+      partyTitle,
+      partyName: partyName || '—',
+      codigo: String(codigoLabel || '—'),
+      nit,
+      fecha: hoy,
+      abonoLabel,
+      incluyeProductos,
+      rows: (rows || []).map((r) => {
+        const docKey = this.resumenDocKey(r.CODDOC, r.CORRELATIVO);
+        const lineas = lineasByDoc.get(docKey) || [];
+        return {
+          doc: this.docResumenLabel(r),
+          fecha: this.formatFecha(r.FECHA),
+          vence: this.formatFecha(r.VENCIMIENTO),
+          importe: Number(r.TOTALPRECIO) || 0,
+          abono: Number(r.DOC_ABONO) || 0,
+          saldo: Number(r.SALDO_PENDIENTE ?? r.DOC_SALDO) || 0,
+          productos: incluyeProductos
+            ? lineas.map((ln) => ({
+                CODPROD: ln.CODPROD,
+                DESPROD: ln.DESPROD,
+                CODMEDIDA: ln.CODMEDIDA,
+                CANTIDAD: ln.CANTIDAD,
+                PRECIO: ln.PRECIO,
+                TOTALPRECIO: ln.TOTALPRECIO,
+              }))
+            : undefined,
+        };
+      }),
+      totals: {
+        importe: t.importe,
+        abono: t.abono,
+        saldo: t.saldo,
+      },
+    };
+    return { html, report, bodyHtml, extraStyles };
+  },
+
+  resumenDocKey(coddoc, correlativo) {
+    return `${String(coddoc || '').trim()}|${String(correlativo ?? '').trim()}`;
+  },
+
+  groupResumenLineasByDoc(lineas) {
+    const map = new Map();
+    for (const ln of lineas || []) {
+      const key = this.resumenDocKey(ln.CODDOC, ln.CORRELATIVO);
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(ln);
+    }
+    return map;
+  },
+
+  renderResumenDocProductosPrintRows(lineas) {
+    const list = lineas || [];
+    if (!list.length) {
+      return `<tr class="ecc-doc-prods"><td colspan="6" style="color:#666;font-size:10px;padding-left:1.25rem">Sin líneas de producto</td></tr>`;
+    }
+    const rowsHtml = list
+      .map(
+        (ln) => `
+        <tr>
+          <td>${PrintReport.escapeHtml(ln.CODPROD || '—')}</td>
+          <td>${PrintReport.escapeHtml(ln.DESPROD || '—')}</td>
+          <td>${PrintReport.escapeHtml(ln.CODMEDIDA || '—')}</td>
+          <td class="text-end">${PrintReport.escapeHtml(this.formatQty(ln.CANTIDAD))}</td>
+          <td class="text-end">${PrintReport.escapeHtml(this.formatMoney(ln.PRECIO))}</td>
+          <td class="text-end">${PrintReport.escapeHtml(this.formatMoney(ln.TOTALPRECIO))}</td>
+        </tr>`
+      )
+      .join('');
+    return `<tr class="ecc-doc-prods"><td colspan="6">
+      <table class="ecc-doc-prods-inner">
+        <thead>
+          <tr>
+            <th>Cód.</th>
+            <th>Producto</th>
+            <th>Medida</th>
+            <th class="text-end">Cant.</th>
+            <th class="text-end">Precio</th>
+            <th class="text-end">Total</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </td></tr>`;
+  },
+
+  async imprimirResumenPendientes(ctx) {
+    if (typeof PrintReport === 'undefined') {
+      F.toast('Impresión no disponible', 'warning');
+      return;
+    }
+    const parts = await this.buildResumenPendientesPrintParts(ctx);
+    await PrintReport.openAndPrint(() => parts.html, 'width=900,height=700');
   },
 
   async enviarWhatsappResumenPendientes(ctx) {
-    if (!ctx.rows?.length) {
-      F.toast('No hay documentos para enviar', 'warning');
-      return;
-    }
-    if (typeof DocOpciones === 'undefined') {
+    if (typeof DocOpciones === 'undefined' || typeof DocOpciones.enviarReporteWhatsapp !== 'function') {
       F.toast('WhatsApp no disponible', 'warning');
       return;
     }
-    const text = this.buildResumenPendientesWhatsappText(ctx);
-    await DocOpciones.enviarWhatsappTexto(text);
+    try {
+      const phone = await DocOpciones.solicitarTelefonoWhatsapp();
+      if (!phone) return;
+      const text = this.buildResumenPendientesWhatsappText(ctx);
+      const parts = await this.buildResumenPendientesPrintParts(ctx);
+      const safeCode = String(ctx.codigoLabel || 'proveedor').replace(/[^\w\-]+/g, '_');
+      const fileName = `facturas-pendientes-${safeCode}.pdf`;
+      const caption = `Facturas pendientes — ${ctx.partyName || ctx.codigoLabel || ''}`.trim();
+      const result = await DocOpciones.enviarReporteWhatsapp({
+        kind: 'pdf',
+        phone,
+        text,
+        report: parts.report,
+        html: parts.html,
+        fileName,
+        caption,
+      });
+      if (!result || result.cancelled) return;
+      if (result.via === 'wa.me') {
+        F.toast('WhatsApp Web no conectado: se abrió el mensaje de texto', 'info');
+      } else {
+        F.toast('PDF enviado por WhatsApp', 'success');
+      }
+    } catch (err) {
+      F.toast(err.message || 'No se pudo enviar por WhatsApp', 'error');
+    }
   },
 
   async mostrarDocsDeProveedor(codigo, { nit = '', nombreKey = '', nombre = '' } = {}) {
@@ -585,7 +729,8 @@ const CuentasPorPagarView = {
       didOpen: () => Swal.showLoading(),
     });
     try {
-      const data = await F.fetchJson(this.documentosProveedorUrl({ codigo, nit, nombre: nombreKey }), {
+      const partyArgs = { codigo, nit, nombre: nombreKey };
+      const data = await F.fetchJson(this.documentosProveedorUrl(partyArgs), {
         cache: 'no-store',
       });
       const rows = data.rows || [];
@@ -605,6 +750,7 @@ const CuentasPorPagarView = {
             partyName: titulo,
             codigoLabel,
             rows,
+            lineasUrl: this.lineasProveedorUrl(partyArgs),
           };
           this.bindModalDocRows((row) => {
             const coddoc = row.getAttribute('data-coddoc');
@@ -810,6 +956,20 @@ const CuentasPorPagarView = {
     const q = this._filterQuery.trim();
     if (q) params.q = q;
     return this.apiUrl(params);
+  },
+
+  lineasProveedorUrl({ codigo, nit, nombre }) {
+    const emp = F.getEmpNit();
+    const params = new URLSearchParams({
+      empnit: emp,
+      _: String(Date.now()),
+      codprov: String(codigo ?? 0),
+    });
+    if (!(Number(codigo) > 0)) {
+      params.set('nit', nit || '');
+      params.set('nombre', nombre || '');
+    }
+    return `/api/cuentas-pagar/documentos/lineas?${params}`;
   },
 
   async corregirSaldos() {

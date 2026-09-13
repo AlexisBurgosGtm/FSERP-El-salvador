@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-
-const root = path.join(__dirname, '..');
-const counterPath = path.join(root, 'build-counter.json');
-const metaPublic = path.join(root, 'public', 'build-meta.json');
+const {
+  buildCounterPath,
+  buildMetaWritablePath,
+  publicDir,
+  isPackaged,
+} = require('../lib/app-paths');
 
 function formatDateDDMMYYYY(date = new Date()) {
   const d = date instanceof Date ? date : new Date(date);
@@ -12,6 +14,10 @@ function formatDateDDMMYYYY(date = new Date()) {
   const year = d.getFullYear();
   return `${day}-${month}-${year}`;
 }
+
+const counterPath = buildCounterPath();
+const metaWritable = buildMetaWritablePath();
+const metaPublic = path.join(publicDir(), 'build-meta.json');
 
 let count = 0;
 if (fs.existsSync(counterPath)) {
@@ -33,7 +39,10 @@ const meta = {
 };
 
 fs.writeFileSync(counterPath, JSON.stringify(meta, null, 2));
-fs.mkdirSync(path.dirname(metaPublic), { recursive: true });
-fs.writeFileSync(metaPublic, JSON.stringify(meta, null, 2));
+fs.writeFileSync(metaWritable, JSON.stringify(meta, null, 2));
+if (!isPackaged()) {
+  fs.mkdirSync(path.dirname(metaPublic), { recursive: true });
+  fs.writeFileSync(metaPublic, JSON.stringify(meta, null, 2));
+}
 
 console.log(`[Build] Compilación #${count}`);

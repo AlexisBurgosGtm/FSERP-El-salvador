@@ -41,6 +41,7 @@ const { copyDocumentoToCommunity, getDocumentosMarcaMaxChars, marcaEnviadoValue 
 const { checkTokenActivo, TOKEN_NO_NUBE_MSG } = require('../lib/community-token');
 const { downloadTrasladoFromCommunity } = require('../lib/community-traslado-download');
 const { parseEntradaInventarioExcel } = require('../lib/inventario-entrada-excel');
+const { valoresEntregadosParaDocumento } = require('../lib/documentos-entregado');
 
 const SEARCH_LIMIT = 80;
 const DEFAULT_BODEGA = 0;
@@ -193,6 +194,9 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
       .input('CORRELATIVO', sql.Decimal(18, 0), correlativo)
       .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
       .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+      .input('ENT_U', sql.Float, ent.unidades)
+      .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+      .input('ENT_P', sql.Decimal(18, 3), ent.precio)
       .input('TOTALIVA', sql.Float, totalIva)
       .input('TOTALSINIVA', sql.Float, totalSinIva)
       .input('PAGO', sql.Decimal(18, 3), totalCosto)
@@ -624,6 +628,7 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
       await transaction.begin();
       try {
         const tipom = await getTipomDocumento(transaction, empnit, coddoc);
+        const ent = await valoresEntregadosParaDocumento(transaction, empnit, coddoc, totalUnidades, totalCosto, totalPrecio);
         const ins = await transaction
           .request()
           .input('EMPNIT', sql.VarChar, empnit)
@@ -642,6 +647,9 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
           .input('PRECIO', sql.Decimal(18, 3), precio)
           .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
           .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+          .input('ENT_U', sql.Float, ent.unidades)
+          .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+          .input('ENT_P', sql.Decimal(18, 3), ent.precio)
           .input('EXENTO', sql.Decimal(18, 3), exento)
           .input('TIPOPROD', sql.VarChar, tipoprod)
           .input('TIPOPRECIO', sql.VarChar, tipoprecio)
@@ -661,7 +669,7 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
               @EMPNIT, @ANIO, @MES, @DIA, @CODDOC, @CORRELATIVO, @CODPROD, @DESPROD, @CODMEDIDA,
               @CANTIDAD, 0, @EQUIVALE, @TOTALUNIDADES, 0,
               @COSTO, @PRECIO, @TOTALCOSTO, @TOTALPRECIO,
-              @TOTALUNIDADES, @TOTALCOSTO, @TOTALPRECIO,
+              @ENT_U, @ENT_C, @ENT_P,
               0, 0, ${DEFAULT_BODEGA}, ${DEFAULT_BODEGA},
               0, 0, 'SN', @EXENTO, 'SN',
               @TIPOPROD, @TIPOPRECIO, @PESO, @TOTALPESO, @TIPOM, CAST(GETDATE() AS DATE)
@@ -725,6 +733,7 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
         .query(`
           SELECT
             l.COSTO, l.PRECIO, l.EQUIVALE, l.PESO, l.TOTALUNIDADES,
+            l.ENTREGADOS_TOTALUNIDADES,
             l.CODPROD, l.DESPROD, l.TIPOPROD, l.TIPOM, l.CODBODEGAENTRADA, l.CODBODEGASALIDA,
             d.STATUS
           FROM dbo.DOCPRODUCTOS l
@@ -743,6 +752,7 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
         ln.EQUIVALE
       );
       const totalPeso = calcLinePeso(cantidad, ln.PESO);
+      const ent = await valoresEntregadosParaDocumento(pool, empnit, coddoc, totalUnidades, totalCosto, totalPrecio);
 
       const transaction = new sql.Transaction(pool);
       await transaction.begin();
@@ -755,6 +765,8 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
           desprod: ln.DESPROD,
           anteriorTotalUnidades: ln.TOTALUNIDADES,
           nuevoTotalUnidades: totalUnidades,
+          anteriorEntregadosTotalUnidades: ln.ENTREGADOS_TOTALUNIDADES,
+          nuevoEntregadosTotalUnidades: ent.unidades,
           tipoprod: ln.TIPOPROD,
           tipom: ln.TIPOM,
           codbodegaEntrada: ln.CODBODEGAENTRADA ?? DEFAULT_BODEGA,
@@ -767,9 +779,9 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
           .input('TOTALUNIDADES', sql.Float, totalUnidades)
           .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
           .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
-          .input('ENTREGADOS_TOTALUNIDADES', sql.Float, totalUnidades)
-          .input('ENTREGADOS_TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
-          .input('ENTREGADOS_TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+          .input('ENTREGADOS_TOTALUNIDADES', sql.Float, ent.unidades)
+          .input('ENTREGADOS_TOTALCOSTO', sql.Decimal(18, 3), ent.costo)
+          .input('ENTREGADOS_TOTALPRECIO', sql.Decimal(18, 3), ent.precio)
           .input('TOTALPESO', sql.Decimal(18, 3), totalPeso)
           .query(`
             UPDATE dbo.DOCPRODUCTOS SET
@@ -1419,6 +1431,14 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
               );
               const peso = 0;
               const totalPeso = calcLinePeso(cantidad, peso);
+              const ent = await valoresEntregadosParaDocumento(
+                transaction,
+                empnit,
+                coddoc,
+                totalUnidades,
+                totalCosto,
+                totalPrecio
+              );
 
               await transaction
                 .request()
@@ -1438,6 +1458,9 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
                 .input('PRECIO', sql.Decimal(18, 3), precio)
                 .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
                 .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+                .input('ENT_U', sql.Float, ent.unidades)
+                .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+                .input('ENT_P', sql.Decimal(18, 3), ent.precio)
                 .input('EXENTO', sql.Decimal(18, 3), line.EXENTO)
                 .input('TIPOPROD', sql.VarChar, line.TIPOPROD)
                 .input('TIPOPRECIO', sql.VarChar, 'P')
@@ -1457,7 +1480,7 @@ function createInventarioDocsRouter(tipodocOrList, logPrefix) {
                     @EMPNIT, @ANIO, @MES, @DIA, @CODDOC, @CORRELATIVO, @CODPROD, @DESPROD, @CODMEDIDA,
                     @CANTIDAD, 0, @EQUIVALE, @TOTALUNIDADES, 0,
                     @COSTO, @PRECIO, @TOTALCOSTO, @TOTALPRECIO,
-                    @TOTALUNIDADES, @TOTALCOSTO, @TOTALPRECIO,
+                    @ENT_U, @ENT_C, @ENT_P,
                     0, 0, ${DEFAULT_BODEGA}, ${DEFAULT_BODEGA},
                     0, 0, 'SN', @EXENTO, 'SN',
                     @TIPOPROD, @TIPOPRECIO, @PESO, @TOTALPESO, @TIPOM, CAST(GETDATE() AS DATE)

@@ -30,6 +30,7 @@ const {
   isStatusEditable,
   SQL_STATUS_EDITABLE,
 } = require('../lib/documento-status');
+const { valoresEntregadosParaDocumento } = require('../lib/documentos-entregado');
 
 const router = express.Router();
 
@@ -207,6 +208,9 @@ async function recalcDocumentTotals(transaction, empnit, coddoc, correlativo) {
     .input('CORRELATIVO', sql.Decimal(18, 0), correlativo)
     .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
     .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+    .input('ENT_U', sql.Float, ent.unidades)
+    .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+    .input('ENT_P', sql.Decimal(18, 3), ent.precio)
     .input('TOTALIVA', sql.Float, totalIva)
     .input('TOTALSINIVA', sql.Float, totalSinIva)
     .input('PAGO', sql.Decimal(18, 3), totalPrecio)
@@ -764,6 +768,7 @@ router.post('/pedidos/:coddoc/:correlativo/lineas', async (req, res) => {
     await transaction.begin();
     try {
       const tipom = await getTipomDocumento(transaction, empnit, coddoc);
+      const ent = await valoresEntregadosParaDocumento(transaction, empnit, coddoc, totalUnidades, totalCosto, totalPrecio);
       const withSol = await hasDocproductosSolicitado(pool);
       const reqIns = transaction
         .request()
@@ -783,6 +788,9 @@ router.post('/pedidos/:coddoc/:correlativo/lineas', async (req, res) => {
         .input('PRECIO', sql.Decimal(18, 3), precio)
         .input('TOTALCOSTO', sql.Decimal(18, 3), totalCosto)
         .input('TOTALPRECIO', sql.Decimal(18, 3), totalPrecio)
+        .input('ENT_U', sql.Float, ent.unidades)
+        .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+        .input('ENT_P', sql.Decimal(18, 3), ent.precio)
         .input('EXENTO', sql.Decimal(18, 3), exento)
         .input('TIPOPROD', sql.VarChar, tipoprod)
         .input('TIPOPRECIO', sql.VarChar, tipoprecio)
@@ -806,7 +814,7 @@ router.post('/pedidos/:coddoc/:correlativo/lineas', async (req, res) => {
             @EMPNIT, @ANIO, @MES, @DIA, @CODDOC, @CORRELATIVO, @CODPROD, @DESPROD, @CODMEDIDA,
             @CANTIDAD, 0, @EQUIVALE, @TOTALUNIDADES, 0,
             @COSTO, @PRECIO, @TOTALCOSTO, @TOTALPRECIO,
-            @TOTALUNIDADES, @TOTALCOSTO, @TOTALPRECIO,
+            @ENT_U, @ENT_C, @ENT_P,
             0, 0, ${DEFAULT_BODEGA}, ${DEFAULT_BODEGA},
             0, 0, 'SN', @EXENTO, @OBS,
             @TIPOPROD, @TIPOPRECIO, @PESO, @TOTALPESO, @TIPOM, CAST(GETDATE() AS DATE), @SOLICITADO
@@ -826,7 +834,7 @@ router.post('/pedidos/:coddoc/:correlativo/lineas', async (req, res) => {
             @EMPNIT, @ANIO, @MES, @DIA, @CODDOC, @CORRELATIVO, @CODPROD, @DESPROD, @CODMEDIDA,
             @CANTIDAD, 0, @EQUIVALE, @TOTALUNIDADES, 0,
             @COSTO, @PRECIO, @TOTALCOSTO, @TOTALPRECIO,
-            @TOTALUNIDADES, @TOTALCOSTO, @TOTALPRECIO,
+            @ENT_U, @ENT_C, @ENT_P,
             0, 0, ${DEFAULT_BODEGA}, ${DEFAULT_BODEGA},
             0, 0, 'SN', @EXENTO, @OBS,
             @TIPOPROD, @TIPOPRECIO, @PESO, @TOTALPESO, @TIPOM, CAST(GETDATE() AS DATE)
@@ -928,6 +936,9 @@ router.patch('/pedidos/:coddoc/:correlativo/lineas/:lineId', async (req, res) =>
         .input('TOTALUNIDADES', sql.Float, totals.totalUnidades)
         .input('TOTALCOSTO', sql.Decimal(18, 3), totals.totalCosto)
         .input('TOTALPRECIO', sql.Decimal(18, 3), totals.totalPrecio)
+        .input('ENT_U', sql.Float, ent.unidades)
+        .input('ENT_C', sql.Decimal(18, 3), ent.costo)
+        .input('ENT_P', sql.Decimal(18, 3), ent.precio)
         .input('TOTALPESO', sql.Decimal(18, 3), totalPeso)
         .query(`
           UPDATE dbo.DOCPRODUCTOS SET
@@ -936,9 +947,6 @@ router.patch('/pedidos/:coddoc/:correlativo/lineas/:lineId', async (req, res) =>
             TOTALCOSTO = @TOTALCOSTO,
             TOTALPRECIO = @TOTALPRECIO,
             TOTALPESO = @TOTALPESO,
-            ENTREGADOS_TOTALUNIDADES = @TOTALUNIDADES,
-            ENTREGADOS_TOTALCOSTO = @TOTALCOSTO,
-            ENTREGADOS_TOTALPRECIO = @TOTALPRECIO,
             LASTUPDATE = CAST(GETDATE() AS DATE)
           WHERE ID = @ID
         `);
